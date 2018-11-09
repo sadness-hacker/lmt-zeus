@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lmt.parent.test.basic.mapper.BasicAaCodeMapper">
+    <resultMap id="basicAaCode" type="com.lmt.parent.test.entity.AaCode">
+        <result column="DD_GUID" property="ddGuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DD_TYPE_GUID" property="ddTypeGuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DD_TYPE_CODE" property="ddTypeCode" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DD_CODE" property="ddCode" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DD_NAME" property="ddName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DD_DESC" property="ddDesc" jdbcType="VARCHAR" javaType="String"/>
+        <result column="PARENT_GUID" property="parentGuid" jdbcType="VARCHAR" javaType="String"/>
+        <result column="IS_END_LEVEL" property="isEndLevel" jdbcType="VARCHAR" javaType="String"/>
+        <result column="PATH_LEVEL" property="pathLevel" jdbcType="NUMERIC" javaType="Short"/>
+        <result column="PATH_CODE" property="pathCode" jdbcType="VARCHAR" javaType="String"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
+        <result column="ROW_ORDER" property="rowOrder" jdbcType="VARCHAR" javaType="String"/>
+        <result column="EXT_COL1" property="extCol1" jdbcType="VARCHAR" javaType="String"/>
+        <result column="EXT_COL2" property="extCol2" jdbcType="VARCHAR" javaType="String"/>
+        <result column="EXT_COL3" property="extCol3" jdbcType="VARCHAR" javaType="String"/>
+        <result column="EXT_COL4" property="extCol4" jdbcType="VARCHAR" javaType="String"/>
+        <result column="EXT_COL5" property="extCol5" jdbcType="VARCHAR" javaType="String"/>
+        <result column="EXT_COL6" property="extCol6" jdbcType="VARCHAR" javaType="String"/>
+        <result column="EXT_COL7" property="extCol7" jdbcType="VARCHAR" javaType="String"/>
+        <result column="EXT_COL8" property="extCol8" jdbcType="VARCHAR" javaType="String"/>
+        <result column="EXT_COL9" property="extCol9" jdbcType="VARCHAR" javaType="String"/>
+        <result column="EXT_COL10" property="extCol10" jdbcType="VARCHAR" javaType="String"/>
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" javaType="Date"/>
+        <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" javaType="String"/>
+        <result column="MODIFY_DATE" property="modifyDate" jdbcType="TIMESTAMP" javaType="Date"/>
+        <result column="MODIFY_USER_ID" property="modifyUserId" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DELETE_DATE" property="deleteDate" jdbcType="TIMESTAMP" javaType="Date"/>
+        <result column="DELETE_USER_ID" property="deleteUserId" jdbcType="VARCHAR" javaType="String"/>
+        <result column="DELETE_FLAG" property="deleteFlag" jdbcType="VARCHAR" javaType="String"/>
+    </resultMap>
+
+    <sql id="basicResult">
+        t.DD_GUID as DD_GUID
+        ,t.DD_TYPE_GUID as DD_TYPE_GUID
+        ,t.DD_TYPE_CODE as DD_TYPE_CODE
+        ,t.DD_CODE as DD_CODE
+        ,t.DD_NAME as DD_NAME
+        ,t.DD_DESC as DD_DESC
+        ,t.PARENT_GUID as PARENT_GUID
+        ,t.IS_END_LEVEL as IS_END_LEVEL
+        ,t.PATH_LEVEL as PATH_LEVEL
+        ,t.PATH_CODE as PATH_CODE
+        ,t.REMARK as REMARK
+        ,t.ROW_ORDER as ROW_ORDER
+        ,t.EXT_COL1 as EXT_COL1
+        ,t.EXT_COL2 as EXT_COL2
+        ,t.EXT_COL3 as EXT_COL3
+        ,t.EXT_COL4 as EXT_COL4
+        ,t.EXT_COL5 as EXT_COL5
+        ,t.EXT_COL6 as EXT_COL6
+        ,t.EXT_COL7 as EXT_COL7
+        ,t.EXT_COL8 as EXT_COL8
+        ,t.EXT_COL9 as EXT_COL9
+        ,t.EXT_COL10 as EXT_COL10
+        ,t.CREATE_DATE as CREATE_DATE
+        ,t.CREATE_USER_ID as CREATE_USER_ID
+        ,t.MODIFY_DATE as MODIFY_DATE
+        ,t.MODIFY_USER_ID as MODIFY_USER_ID
+        ,t.DELETE_DATE as DELETE_DATE
+        ,t.DELETE_USER_ID as DELETE_USER_ID
+        ,t.DELETE_FLAG as DELETE_FLAG
+    </sql>
+
+    <sql id="basicWhere">
+        <if test="aaCode.ddGuid != null and aaCode.ddGuid != ''">and t.DD_GUID = #{aaCode.ddGuid}</if>
+        <if test="aaCode.ddTypeGuid != null and aaCode.ddTypeGuid != ''">and t.DD_TYPE_GUID = #{aaCode.ddTypeGuid}</if>
+        <if test="aaCode.ddTypeCode != null and aaCode.ddTypeCode != ''">and t.DD_TYPE_CODE = #{aaCode.ddTypeCode}</if>
+        <if test="aaCode.ddCode != null and aaCode.ddCode != ''">and t.DD_CODE = #{aaCode.ddCode}</if>
+        <if test="aaCode.ddName != null and aaCode.ddName != ''">and t.DD_NAME = #{aaCode.ddName}</if>
+        <if test="aaCode.ddDesc != null and aaCode.ddDesc != ''">and t.DD_DESC = #{aaCode.ddDesc}</if>
+        <if test="aaCode.parentGuid != null and aaCode.parentGuid != ''">and t.PARENT_GUID = #{aaCode.parentGuid}</if>
+        <if test="aaCode.isEndLevel != null and aaCode.isEndLevel != ''">and t.IS_END_LEVEL = #{aaCode.isEndLevel}</if>
+        <if test="aaCode.pathLevel != null">and t.PATH_LEVEL = #{aaCode.pathLevel}</if>
+        <if test="aaCode.pathCode != null and aaCode.pathCode != ''">and t.PATH_CODE = #{aaCode.pathCode}</if>
+        <if test="aaCode.remark != null and aaCode.remark != ''">and t.REMARK = #{aaCode.remark}</if>
+        <if test="aaCode.rowOrder != null and aaCode.rowOrder != ''">and t.ROW_ORDER = #{aaCode.rowOrder}</if>
+        <if test="aaCode.extCol1 != null and aaCode.extCol1 != ''">and t.EXT_COL1 = #{aaCode.extCol1}</if>
+        <if test="aaCode.extCol2 != null and aaCode.extCol2 != ''">and t.EXT_COL2 = #{aaCode.extCol2}</if>
+        <if test="aaCode.extCol3 != null and aaCode.extCol3 != ''">and t.EXT_COL3 = #{aaCode.extCol3}</if>
+        <if test="aaCode.extCol4 != null and aaCode.extCol4 != ''">and t.EXT_COL4 = #{aaCode.extCol4}</if>
+        <if test="aaCode.extCol5 != null and aaCode.extCol5 != ''">and t.EXT_COL5 = #{aaCode.extCol5}</if>
+        <if test="aaCode.extCol6 != null and aaCode.extCol6 != ''">and t.EXT_COL6 = #{aaCode.extCol6}</if>
+        <if test="aaCode.extCol7 != null and aaCode.extCol7 != ''">and t.EXT_COL7 = #{aaCode.extCol7}</if>
+        <if test="aaCode.extCol8 != null and aaCode.extCol8 != ''">and t.EXT_COL8 = #{aaCode.extCol8}</if>
+        <if test="aaCode.extCol9 != null and aaCode.extCol9 != ''">and t.EXT_COL9 = #{aaCode.extCol9}</if>
+        <if test="aaCode.extCol10 != null and aaCode.extCol10 != ''">and t.EXT_COL10 = #{aaCode.extCol10}</if>
+        <if test="aaCode.createDate != null">and t.CREATE_DATE = #{aaCode.createDate}</if>
+        <if test="aaCode.createUserId != null and aaCode.createUserId != ''">and t.CREATE_USER_ID = #{aaCode.createUserId}</if>
+        <if test="aaCode.modifyDate != null">and t.MODIFY_DATE = #{aaCode.modifyDate}</if>
+        <if test="aaCode.modifyUserId != null and aaCode.modifyUserId != ''">and t.MODIFY_USER_ID = #{aaCode.modifyUserId}</if>
+        <if test="aaCode.deleteDate != null">and t.DELETE_DATE = #{aaCode.deleteDate}</if>
+        <if test="aaCode.deleteUserId != null and aaCode.deleteUserId != ''">and t.DELETE_USER_ID = #{aaCode.deleteUserId}</if>
+        <if test="aaCode.deleteFlag != null and aaCode.deleteFlag != ''">and t.DELETE_FLAG = #{aaCode.deleteFlag}</if>
+    </sql>
+
+    <sql id="basicSortField">
+        <if test="sortField == 'DD_GUID' || sortField == 'ddGuid'">t.DD_GUID</if>
+        <if test="sortField == 'DD_TYPE_GUID' || sortField == 'ddTypeGuid'">t.DD_TYPE_GUID</if>
+        <if test="sortField == 'DD_TYPE_CODE' || sortField == 'ddTypeCode'">t.DD_TYPE_CODE</if>
+        <if test="sortField == 'DD_CODE' || sortField == 'ddCode'">t.DD_CODE</if>
+        <if test="sortField == 'DD_NAME' || sortField == 'ddName'">t.DD_NAME</if>
+        <if test="sortField == 'DD_DESC' || sortField == 'ddDesc'">t.DD_DESC</if>
+        <if test="sortField == 'PARENT_GUID' || sortField == 'parentGuid'">t.PARENT_GUID</if>
+        <if test="sortField == 'IS_END_LEVEL' || sortField == 'isEndLevel'">t.IS_END_LEVEL</if>
+        <if test="sortField == 'PATH_LEVEL' || sortField == 'pathLevel'">t.PATH_LEVEL</if>
+        <if test="sortField == 'PATH_CODE' || sortField == 'pathCode'">t.PATH_CODE</if>
+        <if test="sortField == 'REMARK' || sortField == 'remark'">t.REMARK</if>
+        <if test="sortField == 'ROW_ORDER' || sortField == 'rowOrder'">t.ROW_ORDER</if>
+        <if test="sortField == 'EXT_COL1' || sortField == 'extCol1'">t.EXT_COL1</if>
+        <if test="sortField == 'EXT_COL2' || sortField == 'extCol2'">t.EXT_COL2</if>
+        <if test="sortField == 'EXT_COL3' || sortField == 'extCol3'">t.EXT_COL3</if>
+        <if test="sortField == 'EXT_COL4' || sortField == 'extCol4'">t.EXT_COL4</if>
+        <if test="sortField == 'EXT_COL5' || sortField == 'extCol5'">t.EXT_COL5</if>
+        <if test="sortField == 'EXT_COL6' || sortField == 'extCol6'">t.EXT_COL6</if>
+        <if test="sortField == 'EXT_COL7' || sortField == 'extCol7'">t.EXT_COL7</if>
+        <if test="sortField == 'EXT_COL8' || sortField == 'extCol8'">t.EXT_COL8</if>
+        <if test="sortField == 'EXT_COL9' || sortField == 'extCol9'">t.EXT_COL9</if>
+        <if test="sortField == 'EXT_COL10' || sortField == 'extCol10'">t.EXT_COL10</if>
+        <if test="sortField == 'CREATE_DATE' || sortField == 'createDate'">t.CREATE_DATE</if>
+        <if test="sortField == 'CREATE_USER_ID' || sortField == 'createUserId'">t.CREATE_USER_ID</if>
+        <if test="sortField == 'MODIFY_DATE' || sortField == 'modifyDate'">t.MODIFY_DATE</if>
+        <if test="sortField == 'MODIFY_USER_ID' || sortField == 'modifyUserId'">t.MODIFY_USER_ID</if>
+        <if test="sortField == 'DELETE_DATE' || sortField == 'deleteDate'">t.DELETE_DATE</if>
+        <if test="sortField == 'DELETE_USER_ID' || sortField == 'deleteUserId'">t.DELETE_USER_ID</if>
+        <if test="sortField == 'DELETE_FLAG' || sortField == 'deleteFlag'">t.DELETE_FLAG</if>
+    </sql>
+
+    <select id="query" resultMap="basicAaCode" parameterType="com.lmt.parent.test.entity.AaCode">
+        select <include refid="basicResult" />
+        from T_SJAA_CODE t
+        <where>
+            <include refid="basicWhere" />
+        </where>
+    </select>
+
+    <select id="queryOrderBy" resultMap="basicAaCode">
+        select
+        <include refid="basicResult" />
+        from T_SJAA_CODE t
+        <where>
+            <include refid="basicWhere" />
+        </where>
+        <if test="sortField != null and sortField != ''">
+            <choose>
+                <when test="sortOrder == 'desc' ">
+                    order by <include refid="basicSortField" /> desc
+                </when>
+                <otherwise>
+                    order by <include refid="basicSortField" /> asc
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+
+    <select id="get" resultMap="basicAaCode">
+        select
+        <include refid="basicResult" />
+        from T_SJAA_CODE t
+        where
+        t.DD_GUID = #{ddGuid, jdbcType=VARCHAR}
+    </select>
+
+    <select id="count" resultType="long" parameterType="com.lmt.parent.test.entity.AaCode">
+        select
+        count(*) from T_SJAA_CODE t
+        <where>
+            <include refid="basicWhere" />
+        </where>
+    </select>
+
+    <update id="update" parameterType="com.lmt.parent.test.entity.AaCode">
+        update T_SJAA_CODE t
+        <set>
+            <if test="aaCode.ddGuid != null">t.DD_GUID = #{aaCode.ddGuid, jdbcType=VARCHAR},</if>
+            <if test="aaCode.ddTypeGuid != null">t.DD_TYPE_GUID = #{aaCode.ddTypeGuid, jdbcType=VARCHAR},</if>
+            <if test="aaCode.ddTypeCode != null">t.DD_TYPE_CODE = #{aaCode.ddTypeCode, jdbcType=VARCHAR},</if>
+            <if test="aaCode.ddCode != null">t.DD_CODE = #{aaCode.ddCode, jdbcType=VARCHAR},</if>
+            <if test="aaCode.ddName != null">t.DD_NAME = #{aaCode.ddName, jdbcType=VARCHAR},</if>
+            <if test="aaCode.ddDesc != null">t.DD_DESC = #{aaCode.ddDesc, jdbcType=VARCHAR},</if>
+            <if test="aaCode.parentGuid != null">t.PARENT_GUID = #{aaCode.parentGuid, jdbcType=VARCHAR},</if>
+            <if test="aaCode.isEndLevel != null">t.IS_END_LEVEL = #{aaCode.isEndLevel, jdbcType=VARCHAR},</if>
+            <if test="aaCode.pathLevel != null">t.PATH_LEVEL = #{aaCode.pathLevel, jdbcType=NUMERIC},</if>
+            <if test="aaCode.pathCode != null">t.PATH_CODE = #{aaCode.pathCode, jdbcType=VARCHAR},</if>
+            <if test="aaCode.remark != null">t.REMARK = #{aaCode.remark, jdbcType=VARCHAR},</if>
+            <if test="aaCode.rowOrder != null">t.ROW_ORDER = #{aaCode.rowOrder, jdbcType=VARCHAR},</if>
+            <if test="aaCode.extCol1 != null">t.EXT_COL1 = #{aaCode.extCol1, jdbcType=VARCHAR},</if>
+            <if test="aaCode.extCol2 != null">t.EXT_COL2 = #{aaCode.extCol2, jdbcType=VARCHAR},</if>
+            <if test="aaCode.extCol3 != null">t.EXT_COL3 = #{aaCode.extCol3, jdbcType=VARCHAR},</if>
+            <if test="aaCode.extCol4 != null">t.EXT_COL4 = #{aaCode.extCol4, jdbcType=VARCHAR},</if>
+            <if test="aaCode.extCol5 != null">t.EXT_COL5 = #{aaCode.extCol5, jdbcType=VARCHAR},</if>
+            <if test="aaCode.extCol6 != null">t.EXT_COL6 = #{aaCode.extCol6, jdbcType=VARCHAR},</if>
+            <if test="aaCode.extCol7 != null">t.EXT_COL7 = #{aaCode.extCol7, jdbcType=VARCHAR},</if>
+            <if test="aaCode.extCol8 != null">t.EXT_COL8 = #{aaCode.extCol8, jdbcType=VARCHAR},</if>
+            <if test="aaCode.extCol9 != null">t.EXT_COL9 = #{aaCode.extCol9, jdbcType=VARCHAR},</if>
+            <if test="aaCode.extCol10 != null">t.EXT_COL10 = #{aaCode.extCol10, jdbcType=VARCHAR},</if>
+            <if test="aaCode.createDate != null">t.CREATE_DATE = #{aaCode.createDate, jdbcType=TIMESTAMP},</if>
+            <if test="aaCode.createUserId != null">t.CREATE_USER_ID = #{aaCode.createUserId, jdbcType=VARCHAR},</if>
+            <if test="aaCode.modifyDate != null">t.MODIFY_DATE = #{aaCode.modifyDate, jdbcType=TIMESTAMP},</if>
+            <if test="aaCode.modifyUserId != null">t.MODIFY_USER_ID = #{aaCode.modifyUserId, jdbcType=VARCHAR},</if>
+            <if test="aaCode.deleteDate != null">t.DELETE_DATE = #{aaCode.deleteDate, jdbcType=TIMESTAMP},</if>
+            <if test="aaCode.deleteUserId != null">t.DELETE_USER_ID = #{aaCode.deleteUserId, jdbcType=VARCHAR},</if>
+            <if test="aaCode.deleteFlag != null">t.DELETE_FLAG = #{aaCode.deleteFlag, jdbcType=VARCHAR},</if>
+        </set>
+        where
+            t.DD_GUID = #{aaCode.ddGuid, jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insert" parameterType="com.lmt.parent.test.entity.AaCode">
+        insert into T_SJAA_CODE (
+            DD_GUID
+            ,DD_TYPE_GUID
+            ,DD_TYPE_CODE
+            ,DD_CODE
+            ,DD_NAME
+            ,DD_DESC
+            ,PARENT_GUID
+            ,IS_END_LEVEL
+            ,PATH_LEVEL
+            ,PATH_CODE
+            ,REMARK
+            ,ROW_ORDER
+            ,EXT_COL1
+            ,EXT_COL2
+            ,EXT_COL3
+            ,EXT_COL4
+            ,EXT_COL5
+            ,EXT_COL6
+            ,EXT_COL7
+            ,EXT_COL8
+            ,EXT_COL9
+            ,EXT_COL10
+            ,CREATE_DATE
+            ,CREATE_USER_ID
+            ,MODIFY_DATE
+            ,MODIFY_USER_ID
+            ,DELETE_DATE
+            ,DELETE_USER_ID
+            ,DELETE_FLAG
+        )
+        values(
+            #{aaCode.ddGuid, jdbcType=VARCHAR}
+            ,#{aaCode.ddTypeGuid, jdbcType=VARCHAR}
+            ,#{aaCode.ddTypeCode, jdbcType=VARCHAR}
+            ,#{aaCode.ddCode, jdbcType=VARCHAR}
+            ,#{aaCode.ddName, jdbcType=VARCHAR}
+            ,#{aaCode.ddDesc, jdbcType=VARCHAR}
+            ,#{aaCode.parentGuid, jdbcType=VARCHAR}
+            ,#{aaCode.isEndLevel, jdbcType=VARCHAR}
+            ,#{aaCode.pathLevel, jdbcType=NUMERIC}
+            ,#{aaCode.pathCode, jdbcType=VARCHAR}
+            ,#{aaCode.remark, jdbcType=VARCHAR}
+            ,#{aaCode.rowOrder, jdbcType=VARCHAR}
+            ,#{aaCode.extCol1, jdbcType=VARCHAR}
+            ,#{aaCode.extCol2, jdbcType=VARCHAR}
+            ,#{aaCode.extCol3, jdbcType=VARCHAR}
+            ,#{aaCode.extCol4, jdbcType=VARCHAR}
+            ,#{aaCode.extCol5, jdbcType=VARCHAR}
+            ,#{aaCode.extCol6, jdbcType=VARCHAR}
+            ,#{aaCode.extCol7, jdbcType=VARCHAR}
+            ,#{aaCode.extCol8, jdbcType=VARCHAR}
+            ,#{aaCode.extCol9, jdbcType=VARCHAR}
+            ,#{aaCode.extCol10, jdbcType=VARCHAR}
+            ,#{aaCode.createDate, jdbcType=TIMESTAMP}
+            ,#{aaCode.createUserId, jdbcType=VARCHAR}
+            ,#{aaCode.modifyDate, jdbcType=TIMESTAMP}
+            ,#{aaCode.modifyUserId, jdbcType=VARCHAR}
+            ,#{aaCode.deleteDate, jdbcType=TIMESTAMP}
+            ,#{aaCode.deleteUserId, jdbcType=VARCHAR}
+            ,#{aaCode.deleteFlag, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="com.lmt.parent.test.entity.AaCode">
+        delete from T_SJAA_CODE t
+        where
+        <trim prefixOverrides="and">
+            <include refid="basicWhere" />
+        </trim>
+    </delete>
+
+    <delete id="deleteByPk">
+        delete from T_SJAA_CODE t
+        where
+            t.DD_GUID = #{ddGuid, jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into T_SJAA_CODE (
+            DD_GUID
+            ,DD_TYPE_GUID
+            ,DD_TYPE_CODE
+            ,DD_CODE
+            ,DD_NAME
+            ,DD_DESC
+            ,PARENT_GUID
+            ,IS_END_LEVEL
+            ,PATH_LEVEL
+            ,PATH_CODE
+            ,REMARK
+            ,ROW_ORDER
+            ,EXT_COL1
+            ,EXT_COL2
+            ,EXT_COL3
+            ,EXT_COL4
+            ,EXT_COL5
+            ,EXT_COL6
+            ,EXT_COL7
+            ,EXT_COL8
+            ,EXT_COL9
+            ,EXT_COL10
+            ,CREATE_DATE
+            ,CREATE_USER_ID
+            ,MODIFY_DATE
+            ,MODIFY_USER_ID
+            ,DELETE_DATE
+            ,DELETE_USER_ID
+            ,DELETE_FLAG
+        )
+        <foreach collection="list" item="item" index="index" separator="union all" >
+            select
+                #{item.ddGuid, jdbcType=VARCHAR}
+                ,#{item.ddTypeGuid, jdbcType=VARCHAR}
+                ,#{item.ddTypeCode, jdbcType=VARCHAR}
+                ,#{item.ddCode, jdbcType=VARCHAR}
+                ,#{item.ddName, jdbcType=VARCHAR}
+                ,#{item.ddDesc, jdbcType=VARCHAR}
+                ,#{item.parentGuid, jdbcType=VARCHAR}
+                ,#{item.isEndLevel, jdbcType=VARCHAR}
+                ,#{item.pathLevel, jdbcType=NUMERIC}
+                ,#{item.pathCode, jdbcType=VARCHAR}
+                ,#{item.remark, jdbcType=VARCHAR}
+                ,#{item.rowOrder, jdbcType=VARCHAR}
+                ,#{item.extCol1, jdbcType=VARCHAR}
+                ,#{item.extCol2, jdbcType=VARCHAR}
+                ,#{item.extCol3, jdbcType=VARCHAR}
+                ,#{item.extCol4, jdbcType=VARCHAR}
+                ,#{item.extCol5, jdbcType=VARCHAR}
+                ,#{item.extCol6, jdbcType=VARCHAR}
+                ,#{item.extCol7, jdbcType=VARCHAR}
+                ,#{item.extCol8, jdbcType=VARCHAR}
+                ,#{item.extCol9, jdbcType=VARCHAR}
+                ,#{item.extCol10, jdbcType=VARCHAR}
+                ,#{item.createDate, jdbcType=TIMESTAMP}
+                ,#{item.createUserId, jdbcType=VARCHAR}
+                ,#{item.modifyDate, jdbcType=TIMESTAMP}
+                ,#{item.modifyUserId, jdbcType=VARCHAR}
+                ,#{item.deleteDate, jdbcType=TIMESTAMP}
+                ,#{item.deleteUserId, jdbcType=VARCHAR}
+                ,#{item.deleteFlag, jdbcType=VARCHAR}
+            from dual
+        </foreach>
+
+
+    </insert>
+
+    <select id="listByPKList" resultMap="basicAaCode" parameterType="java.util.List">
+        select
+        <include refid="basicResult" />
+        from T_SJAA_CODE t
+        where t.DD_GUID in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item, jdbcType=VARCHAR}
+        </foreach>
+    </select>
+</mapper>
