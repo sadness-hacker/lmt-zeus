@@ -93,8 +93,9 @@ public class BasicException extends RuntimeException{
      * @param key
      * @param value
      */
-    public void set(String key, String value) {
-        attachment.put(key, value);
+    public BasicException set(String key, Object value) {
+        this.attachment.put(key, value);
+        return this;
     }
 
     /**
