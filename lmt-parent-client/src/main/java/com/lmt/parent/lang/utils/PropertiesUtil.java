@@ -14,9 +14,9 @@ import java.util.ResourceBundle;
  * @date 2018/11/8 17:53
  * @since JDK1.8
  */
-public class PropertyUtil {
+public class PropertiesUtil {
 
-    protected static Logger logger = LoggerFactory.getLogger(PropertyUtil.class);
+    protected static Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
 
     /**
      * 根据文件路径读取配置文件到map
