@@ -58,6 +58,13 @@ public abstract class BasicController<T extends Entity, PK extends Serializable>
         }
     }
 
+    /**
+     * 添加接口，仅支持post方法
+     * @author bazhandao
+     * @date 2018-11-12
+     * @param entity
+     * @return
+     */
     @RequestMapping(value = "/insert", method = RequestMethod.POST, name = "新增entity")
     @ResponseBody
     public Result<Integer> insert(T entity) {
@@ -77,6 +84,13 @@ public abstract class BasicController<T extends Entity, PK extends Serializable>
         return result;
     }
 
+    /**
+     * 更新接口,仅支持post方法（主键不能为空）
+     * @author bazhandao
+     * @date 2018-11-12
+     * @param entity
+     * @return
+     */
     @RequestMapping(value = "/update", method = RequestMethod.POST, name = "更新entity")
     @ResponseBody
     public Result<Integer> update(T entity) {
@@ -96,6 +110,13 @@ public abstract class BasicController<T extends Entity, PK extends Serializable>
         return result;
     }
 
+    /**
+     * 保存接口（插入或更新）仅支持post方法
+     * @author bazhandao
+     * @date 2018-11-12
+     * @param entity
+     * @return
+     */
     @RequestMapping(value = "/save", method = RequestMethod.POST, name = "更新或新增Model")
     @ResponseBody
     public Result<Integer> save(T entity) {
@@ -115,7 +136,14 @@ public abstract class BasicController<T extends Entity, PK extends Serializable>
         return result;
     }
 
-    @RequestMapping(value = "/deleteByPk", method = RequestMethod.POST, name = "根据主键删除Model")
+    /**
+     * 根据主键删除，仅支持delete方法
+     * @author bazhandao
+     * @date 2018-11-12
+     * @param pk
+     * @return
+     */
+    @RequestMapping(value = "/deleteByPk", method = RequestMethod.DELETE, name = "根据主键删除Model")
     @ResponseBody
     public Result<Integer> deleteByPk(PK pk) {
         log.debug("[{}]  deleteByPk, pk={}", entityClass.getSimpleName(), pk);
@@ -134,7 +162,14 @@ public abstract class BasicController<T extends Entity, PK extends Serializable>
         return result;
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST, name = "根据实体条件删除")
+    /**
+     * 根据条件删除，仅支持delete方法
+     * @author bazhandao
+     * @date 2018-11-12
+     * @param entity
+     * @return
+     */
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE, name = "根据实体条件删除")
     @ResponseBody
     public Result<Integer> delete(T entity) {
         log.debug("[{}] delete, entity={}", entityClass.getSimpleName(), entity);
@@ -153,6 +188,13 @@ public abstract class BasicController<T extends Entity, PK extends Serializable>
         return result;
     }
 
+    /**
+     * 根据主键查询
+     * @author bazhandao
+     * @date 2018-11-12
+     * @param pk
+     * @return
+     */
     @RequestMapping(value = "/get", method = RequestMethod.GET, name = "根据主键查寻")
     @ResponseBody
     public Result<T> get(PK pk) {
@@ -172,6 +214,13 @@ public abstract class BasicController<T extends Entity, PK extends Serializable>
         return result;
     }
 
+    /**
+     * 根据条件查寻列表
+     * @author bazhandao
+     * @date 2018-11-12
+     * @param entity
+     * @return
+     */
     @RequestMapping(value = "/query", method = RequestMethod.GET, name = "查寻Entity列表")
     @ResponseBody
     public Result<List<T>> query(T entity) {
@@ -191,6 +240,17 @@ public abstract class BasicController<T extends Entity, PK extends Serializable>
         return result;
     }
 
+    /**
+     * 根据条件分页查寻
+     * @author bazhandao
+     * @date 2018-11-12
+     * @param entity
+     * @param pageNum
+     * @param pageSize
+     * @param sortField
+     * @param sortOrder
+     * @return
+     */
     @RequestMapping(value = "/queryByPage", method = RequestMethod.GET, name = "分页查寻Entity列表,并根据指定自动排序")
     @ResponseBody
     public Result<PageInfo<T>> queryByPage(
