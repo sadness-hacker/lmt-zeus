@@ -18,6 +18,8 @@ public enum  BasicExceptionEnum {
     BEAN_2_JSON_ERR(9002, "Bean转JSON字符串异常"),
     GEN_FILE_MD5_ERR(9003, "计算文件md5值异常"),
     DATE_PARSE_ERROR(9004, "日期转换异常"),
+    FILE_DEL_ERROR(9005, "文件删除异常"),
+    HTTP_REQUEST_ERROR(9006, "http请求异常"),
 
     DB_ERR(1000, "数据库异常");
 

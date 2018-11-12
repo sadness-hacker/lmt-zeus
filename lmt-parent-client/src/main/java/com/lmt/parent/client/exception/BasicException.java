@@ -90,11 +90,25 @@ public class BasicException extends RuntimeException{
 
     /**
      * 设置附加异常信息
+     * @author bazhandao
+     * @date 2018-11-12
      * @param key
      * @param value
      */
     public BasicException set(String key, Object value) {
         this.attachment.put(key, value);
+        return this;
+    }
+
+    /**
+     * 设置所有附加信息
+     * @author bazhandao
+     * @date 2018-11-12
+     * @param map
+     * @return
+     */
+    public BasicException setAll(Map<String, Object> map) {
+        this.attachment.putAll(map);
         return this;
     }
 
