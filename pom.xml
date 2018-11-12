@@ -23,6 +23,8 @@
         <slf4j-api>1.7.25</slf4j-api>
         <jackson>2.9.7</jackson>
         <commons-io>2.6</commons-io>
+        <httpcore>4.4.10</httpcore>
+        <httpclient>4.5.6</httpclient>
     </properties>
 
     <dependencies>
@@ -75,6 +77,21 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore-nio</artifactId>
+            <version>${httpcore}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>${httpclient}</version>
         </dependency>
     </dependencies>
 
