@@ -6,6 +6,8 @@ import com.lmt.parent.basic.service.BasicService;
 import com.lmt.parent.client.exception.BasicException;
 import com.lmt.parent.client.result.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,15 +25,12 @@ import java.util.List;
  * @since JDK1.8
  */
 @Slf4j
-public abstract class BasicController<T extends Entity, PK extends Serializable> {
+public class BasicController<T extends Entity, PK extends Serializable> {
 
-    /**
-     * @description 获取该controller对应的service类
-     * @author bazhandao
-     * @date 2018-11-09
-     * @return
-     */
-    public abstract BasicService<T, PK> getBasicService();
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    private BasicService<T, PK> basicService;
 
     /**
      * 该controller对应的实体类
@@ -56,6 +55,22 @@ public abstract class BasicController<T extends Entity, PK extends Serializable>
             //若没有给定泛型，将Entity类赋值给entityClass
             this.entityClass = Entity.class;
         }
+    }
+
+    /**
+     * @description 获取该controller对应的service类
+     * @author bazhandao
+     * @date 2018-11-09
+     * @return
+     */
+    public BasicService<T, PK> getBasicService() {
+        if (basicService == null) {
+            String name = entityClass.getSimpleName() + "Service";
+            String first = String.valueOf(name.charAt(0));
+            name = name.replaceFirst(first, first.toLowerCase());
+            basicService = applicationContext.getBean(name, BasicService.class);
+        }
+        return basicService;
     }
 
     /**

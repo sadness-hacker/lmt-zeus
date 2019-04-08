@@ -6,7 +6,7 @@ package com.lmt.parent.lang.common;
  * @date 2018/11/8 17:57
  * @since JDK1.8
  */
-public class Constant {
+public class Constants {
 
     /**
      * 用户信息在session中的key

@@ -24,7 +24,7 @@ import java.util.Map;
  * @date 2018/11/10 15:58
  * @since JDK1.8
  */
-public class HttpUtil {
+public class HttpUtils {
 
     private static HttpClient client = HttpClients.createDefault();
 

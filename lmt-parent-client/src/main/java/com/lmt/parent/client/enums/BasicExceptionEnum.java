@@ -20,7 +20,8 @@ public enum  BasicExceptionEnum {
     DATE_PARSE_ERROR(9004, "日期转换异常"),
     FILE_DEL_ERROR(9005, "文件删除异常"),
     HTTP_REQUEST_ERROR(9006, "http请求异常"),
-
+    ENTITY_ID_REFLECT_GETTER_ERROR(9007, "实体类通过反射获取id值出错"),
+    ENTITY_ID_REFLECT_SETTER_ERROR(9008, "实体类通过反射设置id值出错"),
     DB_ERR(1000, "数据库异常");
 
     /**

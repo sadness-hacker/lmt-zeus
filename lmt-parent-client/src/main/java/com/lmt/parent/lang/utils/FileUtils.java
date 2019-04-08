@@ -13,7 +13,7 @@ import java.io.IOException;
  * @date 2018/11/8 17:53
  * @since JDK1.8
  */
-public class FileUtil {
+public class FileUtils {
 
     /**
      * 删除目录
@@ -25,7 +25,7 @@ public class FileUtil {
         File file = new File(path);
         if(file.exists()) {
             try {
-                FileUtils.deleteDirectory(file);
+                org.apache.commons.io.FileUtils.deleteDirectory(file);
             } catch (IOException e) {
                 throw BasicException.wrap(BasicExceptionEnum.FILE_DEL_ERROR.getCode(), BasicExceptionEnum.FILE_DEL_ERROR.getMsg(), e);
             }

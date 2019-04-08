@@ -19,7 +19,7 @@ public interface BasicService<T extends Entity, PK extends Serializable> {
      * @description 获取该service注入的对应的mapper
      * @return
      */
-    public BasicMapper<T, PK> getBasicMapper();
+    public BasicMapper<T> getBasicMapper();
 
     /**
      * @description 插入entity到数据表

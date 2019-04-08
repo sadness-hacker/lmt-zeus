@@ -17,7 +17,7 @@ import java.util.TreeMap;
  * @date 2018/11/8 17:55
  * @since JDK1.8
  */
-public class BeanUtil extends BeanUtils {
+public class BeanUtils extends org.springframework.beans.BeanUtils {
 
     /**
      * bean转为HashMap

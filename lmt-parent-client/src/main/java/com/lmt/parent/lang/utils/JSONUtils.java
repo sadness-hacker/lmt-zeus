@@ -11,7 +11,7 @@ import com.lmt.parent.client.exception.BasicException;
  * @date 2018/11/8 17:52
  * @since JDK1.8
  */
-public class JSONUtil {
+public class JSONUtils {
 
     public static final ObjectMapper mapper = new ObjectMapper();
 

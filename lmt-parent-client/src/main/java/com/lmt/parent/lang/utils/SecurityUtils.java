@@ -15,7 +15,7 @@ import java.io.IOException;
  * @date 2018/11/8 17:51
  * @since JDK1.8
  */
-public class SecurityUtil {
+public class SecurityUtils {
 
     /**
      * 获取字符串的md5值 32位小写

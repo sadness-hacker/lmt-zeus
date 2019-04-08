@@ -17,6 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <pagehelper>5.1.7</pagehelper>
         <spring-web>5.1.2.RELEASE</spring-web>
+        <mapper-spring-boot-starter>2.1.5</mapper-spring-boot-starter>
     </properties>
 
     <dependencies>
@@ -34,6 +35,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring-web}</version>
+        </dependency>
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
+            <version>${mapper-spring-boot-starter}</version>
         </dependency>
     </dependencies>
 </project>
