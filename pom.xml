@@ -22,7 +22,7 @@
         <logback-core>1.2.3</logback-core>
         <logback-classic>1.2.3</logback-classic>
         <slf4j-api>1.7.25</slf4j-api>
-        <jackson>2.9.8</jackson>
+        <jackson>2.9.9.3</jackson>
         <commons-io>2.6</commons-io>
         <httpcore>4.4.10</httpcore>
         <httpclient>4.5.6</httpclient>
