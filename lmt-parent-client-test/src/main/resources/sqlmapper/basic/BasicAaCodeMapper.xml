@@ -289,6 +289,15 @@
             t.DD_GUID = #{ddGuid, jdbcType=VARCHAR}
     </delete>
 
+    <delete id="deleteByPKList">
+        delete from T_SJAA_CODE t
+        where
+            t.DD_GUID in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item, jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+
     <insert id="batchInsert" parameterType="java.util.List">
         insert into T_SJAA_CODE (
             DD_GUID

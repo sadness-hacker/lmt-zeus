@@ -10,6 +10,7 @@ import com.lmt.parent.basic.service.BasicService;
 import com.lmt.parent.basic.service.BasicServiceImpl;
 import com.lmt.parent.test.basic.mapper.BasicAaCodeMapper;
 import com.lmt.parent.test.entity.AaCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 2018-11-07 12:36:54
  * @since JDK 1.8
  */
+@Slf4j
 public class BasicAaCodeServiceImpl extends BasicServiceImpl<AaCode, String> implements BasicService<AaCode, String> {
 
     @Autowired
@@ -36,10 +38,10 @@ public class BasicAaCodeServiceImpl extends BasicServiceImpl<AaCode, String> imp
     @Override
     public int saveOrUpdate(AaCode aaCode) {
         if(aaCode.getDdGuid() == null || get(aaCode.getDdGuid()) == null) {
-            System.out.println("save->________");
+            log.info("[BasicAaCodeServiceImpl] saveOrUpdate insert entity={}", aaCode.toString());
             return insert(aaCode);
         } else {
-            System.out.println("update->________");
+            log.info("[BasicAaCodeServiceImpl] saveOrUpdate update entity={}", aaCode.toString());
             return update(aaCode);
         }
     }
