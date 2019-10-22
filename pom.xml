@@ -8,7 +8,7 @@
     <artifactId>lmt-zeus</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
-        <module>lmt-zeus-parent-client</module>
+        <module>lmt-zeus-parent</module>
     </modules>
     <packaging>pom</packaging>
 
