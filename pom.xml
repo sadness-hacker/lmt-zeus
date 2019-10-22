@@ -19,6 +19,7 @@
         <module>lmt-zeus-security</module>
         <module>lmt-zeus-sso-server</module>
         <module>lmt-zeus-i18n</module>
+        <module>lmt-zeus-audit-log</module>
     </modules>
     <packaging>pom</packaging>
 
