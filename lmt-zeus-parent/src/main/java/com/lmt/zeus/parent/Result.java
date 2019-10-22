@@ -17,20 +17,20 @@ public class Result<T> implements Serializable {
 
     /**
      * 调用是否成功:
-     * false-调用出错，服务异常，data值为null,code值不为0,msg为错误信息;
-     * true-调用正常，服务正常，data有值（未查到数据时为null值）code为0,msg为成功或无值;
+     * false-调用出错，服务异常，data值为null,code值不为1,msg为错误信息;
+     * true-调用正常，服务正常，data有值（未查到数据时为null值）code为1,msg为成功或无值;
      */
     private boolean success = true;
     /**
      * 错误码:
-     * 0-成功
-     * 非0-失败
+     * 1-成功
+     * 非1-失败
      */
-    private int code;
+    private int code = 1;
     /**
      * 错误信息
      */
-    private String msg;
+    private String msg = "调用成功";
     /**
      * 返回值:
      * 失败时为null
