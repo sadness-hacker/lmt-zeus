@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.lmt.parent.config.ParentConfiguration
+  com.lmt.zeus.parent.config.ParentConfiguration
