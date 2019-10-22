@@ -1,6 +1,6 @@
-package com.lmt.zeus.parent.mybatis.mapper;
+package com.lmt.zeus.mybatis.mapper;
 
-import com.lmt.zeus.parent.mybatis.provider.QueryOrderByProvider;
+import com.lmt.zeus.mybatis.provider.QueryOrderByProvider;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;
 import tk.mybatis.mapper.annotation.RegisterMapper;

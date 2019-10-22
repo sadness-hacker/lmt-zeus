@@ -1,4 +1,4 @@
-package com.lmt.zeus.parent.mybatis.provider;
+package com.lmt.zeus.mybatis.provider;
 
 import org.apache.ibatis.mapping.MappedStatement;
 import tk.mybatis.mapper.entity.EntityColumn;

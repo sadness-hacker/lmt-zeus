@@ -1,6 +1,6 @@
-package com.lmt.zeus.parent.mybatis;
+package com.lmt.zeus.mybatis;
 
-import com.lmt.zeus.parent.mybatis.mapper.QueryOrderByMapper;
+import com.lmt.zeus.mybatis.mapper.QueryOrderByMapper;
 import tk.mybatis.mapper.common.IdsMapper;
 import tk.mybatis.mapper.common.base.BaseInsertMapper;
 import tk.mybatis.mapper.common.base.BaseSelectMapper;
