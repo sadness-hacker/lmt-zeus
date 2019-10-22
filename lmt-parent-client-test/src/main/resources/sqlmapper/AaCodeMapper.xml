@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lmt.parent.test.mapper.AaCodeMapper">
-    <resultMap id="aaCode" type="com.lmt.parent.test.entity.AaCode" extends="com.lmt.parent.test.basic.mapper.BasicAaCodeMapper.basicAaCode">
-    </resultMap>
-
-</mapper>
