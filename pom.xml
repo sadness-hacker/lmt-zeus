@@ -18,6 +18,7 @@
         <module>lmt-zeus-id-generator</module>
         <module>lmt-zeus-security</module>
         <module>lmt-zeus-sso-server</module>
+        <module>lmt-zeus-i18n</module>
     </modules>
     <packaging>pom</packaging>
 
