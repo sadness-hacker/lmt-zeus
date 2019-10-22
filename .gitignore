@@ -26,4 +26,6 @@ hs_err_pid*
 /logs
 
 .DS_Store
+*/target
+
 
