@@ -1,5 +1,6 @@
 package com.lmt.zeus.parent.utils;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lmt.zeus.parent.exception.ZeusExceptionEnum;
@@ -15,6 +16,12 @@ public class JSONUtils {
 
     public static final ObjectMapper mapper = new ObjectMapper();
 
+    public static final ObjectMapper mapperWithClassInfo = new ObjectMapper();
+
+    {
+        mapperWithClassInfo.activateDefaultTyping(mapperWithClassInfo.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    }
+
     /**
      * 对象转json字符串
      * @param obj
@@ -26,6 +33,25 @@ public class JSONUtils {
         } catch (Exception e) {
             throw ZeusException.wrap(ZeusExceptionEnum.BEAN_2_JSON_ERR.getCode(), ZeusExceptionEnum.BEAN_2_JSON_ERR.getMsg(), e)
                     .set("object", obj);
+        }
+    }
+
+    /**
+     * 对象转json字符串,可以设置是否包含class信息
+     * @param obj
+     * @param withClassInfo 是否包含class信息
+     * @return
+     */
+    public static String toJson(Object obj, boolean withClassInfo) {
+        if (withClassInfo) {
+            try {
+                return mapperWithClassInfo.writeValueAsString(obj);
+            } catch (Exception e) {
+                throw ZeusException.wrap(ZeusExceptionEnum.BEAN_2_JSON_ERR.getCode(), ZeusExceptionEnum.BEAN_2_JSON_ERR.getMsg(), e)
+                        .set("object", obj);
+            }
+        } else {
+            return toJson(obj);
         }
     }
 

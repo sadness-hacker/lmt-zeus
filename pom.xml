@@ -11,6 +11,8 @@
     <groupId>com.lmt.zeus</groupId>
     <artifactId>lmt-zeus</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
     <modules>
         <module>lmt-zeus-parent</module>
         <module>lmt-zeus-mybatis</module>
@@ -20,10 +22,11 @@
         <module>lmt-zeus-sso-server</module>
         <module>lmt-zeus-i18n</module>
         <module>lmt-zeus-audit-log</module>
+        <module>lmt-zeus-redis</module>
     </modules>
-    <packaging>pom</packaging>
 
     <properties>
+        <reversion>1.0.0-SNAPSHOT</reversion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <lombok>1.18.4</lombok>
@@ -36,6 +39,7 @@
         <commons-io>2.6</commons-io>
         <httpcore>4.4.10</httpcore>
         <httpclient>4.5.6</httpclient>
+        <junit>4.12</junit>
     </properties>
 
     <dependencies>
@@ -104,6 +108,12 @@
             <artifactId>httpmime</artifactId>
             <version>${httpclient}</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -138,4 +148,16 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <name>Xiaoxuan Nexus Releases Repository</name>
+            <url>http://db02/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>Xiaoxuan Nexus Snapshots Repository</name>
+            <url>http://db02/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

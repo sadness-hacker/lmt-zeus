@@ -23,17 +23,4 @@
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
     </dependencies>
-
-    <distributionManagement>
-        <repository>
-            <id>nexus-releases</id>
-            <name>Xiaoxuan Nexus Releases Repository</name>
-            <url>http://db02/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <name>Xiaoxuan Nexus Snapshots Repository</name>
-            <url>http://db02/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>

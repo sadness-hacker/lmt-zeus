@@ -15,12 +15,24 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mapper-spring-boot-starter>2.1.5</mapper-spring-boot-starter>
+        <pagehelper-spring-boot-starter>1.2.12</pagehelper-spring-boot-starter>
+        <druid-spring-boot-starter>1.1.18</druid-spring-boot-starter>
     </properties>
     <dependencies>
         <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper-spring-boot-starter</artifactId>
             <version>${mapper-spring-boot-starter}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>${pagehelper-spring-boot-starter}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid-spring-boot-starter}</version>
         </dependency>
     </dependencies>
 

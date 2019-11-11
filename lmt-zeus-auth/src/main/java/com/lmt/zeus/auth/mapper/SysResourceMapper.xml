@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lmt.zeus.auth.mapper.SysResourceMapper">
+    <resultMap id="sysResource" type="com.lmt.zeus.auth.entity.SysResource">
+        <!--
+          Generate by lmt-code-generator
+          https://github.com/sadness-hacker/lmt-code-generator
+        -->
+        <id column="id" property="id" jdbcType="BIGINT" javaType="Long"/>
+        <result column="code" property="code" jdbcType="VARCHAR" javaType="String"/>
+        <result column="name" property="name" jdbcType="VARCHAR" javaType="String"/>
+        <result column="type_code" property="typeCode" jdbcType="VARCHAR" javaType="String"/>
+        <result column="url" property="url" jdbcType="VARCHAR" javaType="String"/>
+        <result column="ext" property="ext" jdbcType="VARCHAR" javaType="String"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+</mapper>
+
