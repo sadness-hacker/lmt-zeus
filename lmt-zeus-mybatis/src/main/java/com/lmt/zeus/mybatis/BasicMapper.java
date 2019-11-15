@@ -1,7 +1,7 @@
 package com.lmt.zeus.mybatis;
 
+import com.lmt.zeus.mybatis.mapper.IdsMapper;
 import com.lmt.zeus.mybatis.mapper.QueryOrderByMapper;
-import tk.mybatis.mapper.common.IdsMapper;
 import tk.mybatis.mapper.common.base.BaseInsertMapper;
 import tk.mybatis.mapper.common.base.BaseSelectMapper;
 import tk.mybatis.mapper.common.base.delete.DeleteByPrimaryKeyMapper;
