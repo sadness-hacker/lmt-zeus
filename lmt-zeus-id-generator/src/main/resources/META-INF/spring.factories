@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.lmt.zeus.id.snow.config.IdGeneratorConfiguration

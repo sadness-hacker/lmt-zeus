@@ -1,0 +1,12 @@
+#配置示例
+lmt.zeus.id.generator-type=zeusIdGenerator
+lmt.zeus.id.snowflake.generator-type=cachedUidGenerator
+lmt.zeus.id.snowflake.time-bits=28
+lmt.zeus.id.snowflake.worker-bits=22
+lmt.zeus.id.snowflake.seq-bits=13
+lmt.zeus.id.snowflake.epoch-str=2019-10-24
+lmt.zeus.id.snowflake.boost-power=3
+lmt.zeus.id.snowflake.padding-factor=50
+lmt.zeus.id.snowflake.schedule-interval=300
+lmt.zeus.id.snowflake.rejected-put-buffer-handler=
+lmt.zeus.id.snowflake.rejected-take-buffer-handler=

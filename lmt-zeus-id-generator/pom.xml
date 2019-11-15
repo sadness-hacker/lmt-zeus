@@ -12,5 +12,17 @@
     <groupId>com.lmt.zeus</groupId>
     <artifactId>lmt-zeus-id-generator</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.lmt.zeus</groupId>
+            <artifactId>lmt-zeus-parent</artifactId>
+            <version>${reversion}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lmt.zeus</groupId>
+            <artifactId>lmt-zeus-mybatis</artifactId>
+            <version>${reversion}</version>
+        </dependency>
+    </dependencies>
 
 </project>
