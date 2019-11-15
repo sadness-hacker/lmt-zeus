@@ -49,7 +49,7 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
      * @return assigned worker id
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public long assignWorkerId() {
         // build worker node entity
         SysIdWorkerNodeEntity workerNodeEntity = buildWorkerNode();
