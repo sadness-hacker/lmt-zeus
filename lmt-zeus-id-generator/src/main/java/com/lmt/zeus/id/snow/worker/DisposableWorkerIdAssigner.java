@@ -17,15 +17,26 @@ package com.lmt.zeus.id.snow.worker;
 
 import com.lmt.zeus.id.snow.utils.DockerUtils;
 import com.lmt.zeus.id.snow.utils.NetUtils;
-import com.lmt.zeus.id.snow.worker.entity.SysIdWorkerNodeEntity;
+import com.lmt.zeus.id.snow.worker.entity.SysIdWorkerNode;
 import com.lmt.zeus.id.snow.worker.mapper.SysIdWorkerNodeMapper;
+import com.lmt.zeus.parent.common.Constants;
+import com.lmt.zeus.parent.exception.ZeusException;
+import com.lmt.zeus.parent.exception.ZeusExceptionEnum;
+import com.lmt.zeus.parent.utils.FileUtils;
+import com.lmt.zeus.parent.utils.JSONUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.io.File;
+import java.util.Date;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Represents an implementation of {@link WorkerIdAssigner},
@@ -33,13 +44,28 @@ import javax.annotation.Resource;
  *
  * @author yutianbao
  */
+@Slf4j
 @Service(value = "workerIdAssigner")
 public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DisposableWorkerIdAssigner.class);
-
     @Resource
     private SysIdWorkerNodeMapper sysIdWorkerNodeMapper;
+
+    @Value("${spring.application.name:default}")
+    private String applicationName;
+
+    private SysIdWorkerNode workerNode;
+
+    @PostConstruct
+    private void init() {
+        log.info("初始化定时更新workerId任务,每10s执行一次...");
+        ScheduledExecutorService executor = new ScheduledThreadPoolExecutor(1);
+        executor.scheduleAtFixedRate(
+                () -> updateWorkerId(),
+                10,
+                10,
+                TimeUnit.SECONDS);
+    }
 
     /**
      * Assign worker id base on database.<p>
@@ -47,37 +73,131 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
      * Otherwise, the node runs on an actual machine.
      *
      * @return assigned worker id
+     *
+     * @author bazhandao
+     * @date 2019-11-15
+     * 优化workerId分配算法，缓存id到本地目录，下次启动时先判断id是否可用
+     *
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public long assignWorkerId() {
+        // 1.读取本地缓存的id
+        String path = getLocalWorkerIdPath();
+        workerNode = readLocalWorkerId(path);
+        if (workerNode != null) {
+            long id = workerNode.getId();
+            SysIdWorkerNode dbEntity = sysIdWorkerNodeMapper.selectByPrimaryKey(id);
+            if (dbEntity != null
+                    && workerNode.getLastTimestamp().longValue() >= dbEntity.getLastTimestamp().longValue()
+                    && workerNode.getPort().equals(dbEntity.getPort())
+                    && workerNode.getHostName().equals(dbEntity.getHostName())
+                    && workerNode.getType().intValue() == dbEntity.getType()) {
+                if (workerNode.getLastTimestamp() >= System.currentTimeMillis()) {
+                    throw ZeusException.wrap(ZeusExceptionEnum.WORK_ID_INIT_ERROR.getCode(), ZeusExceptionEnum.WORK_ID_INIT_ERROR.getMsg())
+                            .set("msg", "时间戳出错,时间可能出现回拔,系统时间小于上次workerId最后更新时间!!!")
+                            .set("currTimestamp", System.currentTimeMillis())
+                            .set("lastTimestamp", workerNode.getLastTimestamp());
+                }
+                workerNode.setLaunchDate(new Date());
+                updateWorkerId();
+                return id;
+            }
+        }
+        // 则重新申请id
         // build worker node entity
-        SysIdWorkerNodeEntity workerNodeEntity = buildWorkerNode();
+        workerNode = buildWorkerNode();
 
         // add worker node for new (ignore the same IP + PORT)
-        sysIdWorkerNodeMapper.addWorkerNode(workerNodeEntity);
-        LOGGER.info("Add worker node:" + workerNodeEntity);
+        insert(workerNode);
+        log.info("Add worker node:" + workerNode);
 
-        return workerNodeEntity.getId();
+        updateWorkerId();
+        return workerNode.getId();
     }
 
     /**
      * Build worker node entity by IP and PORT
      */
-    private SysIdWorkerNodeEntity buildWorkerNode() {
-        SysIdWorkerNodeEntity workerNodeEntity = new SysIdWorkerNodeEntity();
+    private SysIdWorkerNode buildWorkerNode() {
+        SysIdWorkerNode workerNode = new SysIdWorkerNode();
         if (DockerUtils.isDocker()) {
-            workerNodeEntity.setType(WorkerNodeType.CONTAINER.value());
-            workerNodeEntity.setHostName(DockerUtils.getDockerHost());
-            workerNodeEntity.setPort(DockerUtils.getDockerPort());
-
+            workerNode.setType(WorkerNodeType.CONTAINER.value());
+            workerNode.setHostName(DockerUtils.getDockerHost());
+            workerNode.setPort(DockerUtils.getDockerPort());
         } else {
-            workerNodeEntity.setType(WorkerNodeType.ACTUAL.value());
-            workerNodeEntity.setHostName(NetUtils.getLocalAddress());
-            workerNodeEntity.setPort(System.currentTimeMillis() + "-" + RandomUtils.nextInt(0, 100000));
+            workerNode.setType(WorkerNodeType.ACTUAL.value());
+            workerNode.setHostName(NetUtils.getLocalAddress());
+            workerNode.setPort(System.currentTimeMillis() + "-" + RandomUtils.nextInt(0, 100000));
         }
+        workerNode.setLaunchDate(new Date());
+        workerNode.setLastTimestamp(System.currentTimeMillis());
+        workerNode.setCreatedTime(workerNode.getLaunchDate());
+        workerNode.setUpdatedTime(workerNode.getLaunchDate());
+        return workerNode;
+    }
 
-        return workerNodeEntity;
+    /**
+     * 更新db/本地的workerId
+     * @author bazhandao
+     * @date 2019-11-17
+     */
+    private void updateWorkerId() {
+        workerNode.setLastTimestamp(System.currentTimeMillis());
+        workerNode.setUpdatedTime(new Date());
+        FileUtils.write(getLocalWorkerIdPath(), JSONUtils.toJson(workerNode));
+        sysIdWorkerNodeMapper.updateByPrimaryKeySelective(workerNode);
+        log.debug("更新db/本地workerId,path={},wokerNode={}", getLocalWorkerIdPath(), workerNode);
+    }
+
+    /**
+     * 读取本地workerId
+     * @author bazhandao
+     * @date 2019-11-17
+     * @param path
+     * @return
+     */
+    private SysIdWorkerNode readLocalWorkerId(String path) {
+        try {
+            if (!new File(path).exists()) {
+                return null;
+            }
+            return JSONUtils.fromJson(FileUtils.readAll(path), SysIdWorkerNode.class);
+        } catch (Exception e) {
+            log.error("读取本地workerId出错,path={},{}", path, e);
+        }
+        return null;
+    }
+
+    /**
+     * 获取本地workerId文件路径
+     * @author bazhandao
+     * @date 2019-11-17
+     * @return
+     */
+    private String getLocalWorkerIdPath() {
+        return System.getProperty("user.home") + Constants.SLASH_STR + Constants.DOT_STR + applicationName + "-worker-id.json";
+    }
+
+    /**
+     * 插入workerId
+     * @author bazhandao
+     * @date 2019-11-17
+     * @param sysIdWorkerNode
+     */
+    private int insert(SysIdWorkerNode sysIdWorkerNode) {
+        for (int i = 0; i < 10; i++) {
+            try {
+                Long id = sysIdWorkerNodeMapper.selectMaxId();
+                id = id == null ? 0 : id;
+                sysIdWorkerNode.setId(id + 1);
+                return sysIdWorkerNodeMapper.insertSelective(sysIdWorkerNode);
+            } catch (Exception e) {
+                log.error("插入workerId出错!", e);
+            }
+        }
+        throw ZeusException.wrap(ZeusExceptionEnum.WORK_ID_INIT_ERROR.getCode(), ZeusExceptionEnum.WORK_ID_INIT_ERROR.getMsg())
+            .set("msg", "尝试新增workerId出错,尝试10失败,不再尝试");
     }
 
 }

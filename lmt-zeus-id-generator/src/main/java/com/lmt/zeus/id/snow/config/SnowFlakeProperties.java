@@ -28,12 +28,12 @@ public class SnowFlakeProperties {
     /**
      * 时间位数
      */
-    private int timeBits = 28;
+    private int timeBits = 30;
 
     /**
      * worker节点位数
      */
-    private int workerBits = 22;
+    private int workerBits = 20;
 
     /**
      * 序列位数

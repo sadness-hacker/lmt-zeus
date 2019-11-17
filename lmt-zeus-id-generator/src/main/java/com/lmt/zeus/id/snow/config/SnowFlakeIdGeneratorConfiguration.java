@@ -3,13 +3,11 @@ package com.lmt.zeus.id.snow.config;
 import com.lmt.zeus.id.snow.buffer.RejectedPutBufferHandler;
 import com.lmt.zeus.id.snow.buffer.RejectedTakeBufferHandler;
 import com.lmt.zeus.id.snow.impl.CachedUidGenerator;
-import com.lmt.zeus.id.snow.impl.DefaultUidGenerator;
 import com.lmt.zeus.id.snow.worker.WorkerIdAssigner;
 import com.lmt.zeus.mybatis.BasicMapper;
 import com.lmt.zeus.parent.utils.SpringContextUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -42,7 +40,6 @@ public class SnowFlakeIdGeneratorConfiguration {
      * @date 2019-11-15
      * @return
      */
-    @ConditionalOnProperty(value = "lmt.zeus.id.snowflake.generator-type", havingValue = "cachedUidGenerator")
     @Bean(value = "uidGenerator")
     public CachedUidGenerator cachedUidGenerator() {
         CachedUidGenerator cachedUidGenerator = new CachedUidGenerator();
@@ -61,24 +58,6 @@ public class SnowFlakeIdGeneratorConfiguration {
         cachedUidGenerator.setPaddingFactor(snowFlakeProperties.getPaddingFactor());
         cachedUidGenerator.setWorkerIdAssigner(workerIdAssigner);
         return cachedUidGenerator;
-    }
-
-    /**
-     * 配置雪花算法默认DefaultUidGenerator
-     * @author bazhandao
-     * @date 2019-11-15
-     * @return
-     */
-    @Bean(value = "uidGenerator")
-    @ConditionalOnMissingBean(name = "uidGenerator")
-    public DefaultUidGenerator defaultUidGenerator() {
-        DefaultUidGenerator defaultUidGenerator = new DefaultUidGenerator();
-        defaultUidGenerator.setTimeBits(snowFlakeProperties.getTimeBits());
-        defaultUidGenerator.setWorkerBits(snowFlakeProperties.getWorkerBits());
-        defaultUidGenerator.setSeqBits(snowFlakeProperties.getSeqBits());
-        defaultUidGenerator.setEpochStr(snowFlakeProperties.getEpochStr());
-        defaultUidGenerator.setWorkerIdAssigner(workerIdAssigner);
-        return defaultUidGenerator;
     }
 
 }

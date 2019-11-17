@@ -3,8 +3,13 @@ package com.lmt.zeus.parent.utils;
 import com.lmt.zeus.parent.exception.ZeusExceptionEnum;
 import com.lmt.zeus.parent.exception.ZeusException;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 /**
  * @description 文件工具类
@@ -44,4 +49,36 @@ public class FileUtils {
         }
     }
 
+    /**
+     * 读取文件中所有内容为字符串
+     * @author bazhandao
+     * @date 2019-11-17
+     * @param path
+     * @return
+     */
+    public static String readAll(String path) {
+        try {
+            List<String> lineList = Files.readAllLines(Paths.get(path));
+            StringBuilder sb = new StringBuilder();
+            lineList.forEach(s -> sb.append(s));
+            return sb.toString();
+        } catch (Exception e) {
+            throw ZeusException.wrap(ZeusExceptionEnum.FILE_READ_ERROR.getCode(), ZeusExceptionEnum.FILE_READ_ERROR.getMsg(), e);
+        }
+    }
+
+    /**
+     * 写入内容到指定文件
+     * @author bazhandao
+     * @date 2019-11-17
+     * @param path
+     * @param content
+     */
+    public static void write(String path, String content) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
+            bw.write(content);
+        } catch (Exception e) {
+            throw ZeusException.wrap(ZeusExceptionEnum.FILE_WRITE_ERROR.getCode(), ZeusExceptionEnum.FILE_WRITE_ERROR.getMsg(), e);
+        }
+    }
 }

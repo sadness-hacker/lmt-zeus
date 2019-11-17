@@ -15,32 +15,23 @@
  */
 package com.lmt.zeus.id.snow.worker.mapper;
 
-import com.lmt.zeus.id.snow.worker.entity.SysIdWorkerNodeEntity;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import com.lmt.zeus.id.snow.worker.entity.SysIdWorkerNode;
+import com.lmt.zeus.mybatis.BasicMapper;
 
 /**
- * DAO for M_WORKER_NODE
+ * SysIdWorkerNodeMapper
+ * @author bazhandao
+ * @date 2019-11-17
  *
- * @author yutianbao
  */
-@Repository
-public interface SysIdWorkerNodeMapper {
+public interface SysIdWorkerNodeMapper extends BasicMapper<SysIdWorkerNode> {
 
     /**
-     * Get {@link SysIdWorkerNodeEntity} by node host
-     *
-     * @param host
-     * @param port
+     * 选取目前最大的id
+     * @author bazhandao
+     * @date 2019-11-17
      * @return
      */
-    SysIdWorkerNodeEntity getWorkerNodeByHostPort(@Param("host") String host, @Param("port") String port);
-
-    /**
-     * Add {@link SysIdWorkerNodeEntity}
-     *
-     * @param workerNodeEntity
-     */
-    void addWorkerNode(SysIdWorkerNodeEntity workerNodeEntity);
+    Long selectMaxId();
 
 }

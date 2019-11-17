@@ -22,6 +22,13 @@ public enum ZeusExceptionEnum {
     HTTP_REQUEST_ERROR(9006, "http请求异常"),
     ENTITY_ID_REFLECT_GETTER_ERROR(9007, "实体类通过反射获取id值出错"),
     ENTITY_ID_REFLECT_SETTER_ERROR(9008, "实体类通过反射设置id值出错"),
+    AES_ENCODE_ERROR(9009, "AES加密出错"),
+    AES_DECODE_ERROR(9010, "AES解密出错"),
+    NO_ACCESS_ERROR(9011, "无权访问"),
+    UNAUTHORIZED_ERROR(401, "用户未认证"),
+    FILE_READ_ERROR(9012, "文件读取出错"),
+    FILE_WRITE_ERROR(9013, "文件写入出错"),
+    WORK_ID_INIT_ERROR(9014, "初始化workerId出错"),
     DB_ERR(1000, "数据库异常");
 
     /**

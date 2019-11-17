@@ -20,6 +20,7 @@ import com.lmt.zeus.id.snow.UidGenerator;
 import com.lmt.zeus.id.snow.exception.UidGenerateException;
 import com.lmt.zeus.id.snow.utils.DateUtils;
 import com.lmt.zeus.id.snow.worker.WorkerIdAssigner;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +58,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author yutianbao
  */
+@Slf4j
 public class DefaultUidGenerator implements UidGenerator, InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultUidGenerator.class);
 
