@@ -26,6 +26,6 @@ public interface QueryOrderByMapper<T> {
      * @return
      */
     @SelectProvider(type = QueryOrderByProvider.class, method = "dynamicSQL")
-    List<T> queryOrderBy(T entity, @Param(value = "sortField") String sortField, @Param(value = "sortOrder") String sortOrder);
+    List<T> queryOrderBy(@Param(value = "entity") T entity, @Param(value = "sortField") String sortField, @Param(value = "sortOrder") String sortOrder);
 
 }

@@ -26,7 +26,9 @@ import com.lmt.zeus.parent.utils.FileUtils;
 import com.lmt.zeus.parent.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +52,9 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
 
     @Resource
     private SysIdWorkerNodeMapper sysIdWorkerNodeMapper;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Value("${spring.application.name:default}")
     private String applicationName;
@@ -197,7 +202,7 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
             }
         }
         throw ZeusException.wrap(ZeusExceptionEnum.WORK_ID_INIT_ERROR.getCode(), ZeusExceptionEnum.WORK_ID_INIT_ERROR.getMsg())
-            .set("msg", "尝试新增workerId出错,尝试10失败,不再尝试");
+            .set("msg", "尝试新增workerId出错,尝试10失败,不再尝试!");
     }
 
 }

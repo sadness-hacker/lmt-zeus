@@ -36,16 +36,21 @@ public class QueryOrderByProvider extends MapperTemplate {
         StringBuilder sql = new StringBuilder();
         sql.append(SqlHelper.selectAllColumns(entityClass));
         sql.append(SqlHelper.fromTable(entityClass, tableName(entityClass)));
+        Set<EntityColumn> columnList = EntityHelper.getColumns(entityClass);
+        sql.append("<where>");
+        for (EntityColumn column : columnList) {
+            sql.append(SqlHelper.getIfNotNull("entity", column, " AND " + column.getColumnEqualsHolder("entity"), true));
+        }
+        sql.append("</where>");
         sql.append("<if test=\"sortField != null and sortField != ''\">");
         sql.append("order by");
-        Set<EntityColumn> columnList = EntityHelper.getColumns(entityClass);
-        for(EntityColumn column : columnList) {
+        for (EntityColumn column : columnList) {
             sql.append("<if test=\"sortField == '").append(column.getColumn()).append("' || sortField == '").append(column.getEntityField().getName()).append("'\">");
             sql.append(column.getColumn());
             sql.append("</if>");
         }
         sql.append("<choose>");
-        sql.append("<when test=\"sortOrder == 'desc' \">desc</when>");
+        sql.append("<when test=\"sortOrder == 'desc' || sortOrder == 'DESC'\">desc</when>");
         sql.append("<otherwise>asc</otherwise>");
         sql.append("</choose>");
         sql.append("</if>");

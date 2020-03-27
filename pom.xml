@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.0.RELEASE</version>
+        <version>2.2.5.RELEASE</version>
     </parent>
     <groupId>com.lmt.zeus</groupId>
     <artifactId>lmt-zeus</artifactId>
@@ -23,6 +23,7 @@
         <module>lmt-zeus-i18n</module>
         <module>lmt-zeus-audit-log</module>
         <module>lmt-zeus-redis</module>
+        <module>lmt-zeus-jpa</module>
     </modules>
 
     <properties>

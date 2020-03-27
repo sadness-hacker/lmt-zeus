@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>lmt-zeus</artifactId>
+        <groupId>com.lmt.zeus</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.lmt.zeus</groupId>
+    <artifactId>lmt-zeus-jpa</artifactId>
+
+    <properties>
+        <druid-spring-boot-starter>1.1.18</druid-spring-boot-starter>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <artifactId>lmt-zeus-parent</artifactId>
+            <groupId>com.lmt.zeus</groupId>
+            <version>${reversion}</version>
+        </dependency>
+        <dependency>
+            <artifactId>lmt-zeus-id-generator</artifactId>
+            <groupId>com.lmt.zeus</groupId>
+            <version>${reversion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid-spring-boot-starter}</version>
+        </dependency>
+    </dependencies>
+
+</project>

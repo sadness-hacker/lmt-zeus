@@ -40,6 +40,16 @@ public class DateUtils {
      * yyyy-MM-dd HH:mm:ss格式
      */
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * yyyy-MM-dd HH:mm格式
+     */
+    public static final String YYYY_MM_DD_HH_MM = "yyyy-MM-dd HH:mm";
+
+    /**
+     * yyyy-MM-dd HH格式
+     */
+    public static final String YYYY_MM_DD_HH = "yyyy-MM-dd HH";
     /**
      * HHmmss格式
      */
@@ -272,5 +282,29 @@ public class DateUtils {
         LocalTime localTime = toLocalTime(date);
         LocalDateTime localDateTime = LocalDateTime.of(LocalDate.of(0, 0, 0), localTime);
         return toDate(localDateTime);
+    }
+
+    /**
+     * 获取分钟时间,保留到分钟级
+     * @author bazhandao
+     * @date 2020-03-16
+     * @param date
+     * @return
+     */
+    public static Date getDateMinusTime(Date date) {
+        String str = format(date, YYYY_MM_DD_HH_MM);
+        return parse(str, YYYY_MM_DD_HH_MM);
+    }
+
+    /**
+     * 获取时间、保留到小时级
+     * @author bazhandao
+     * @date 2020-03-20
+     * @param date
+     * @return
+     */
+    public static Date getDateHourTime(Date date) {
+        String str = format(date, YYYY_MM_DD_HH);
+        return parse(str, YYYY_MM_DD_HH);
     }
 }
