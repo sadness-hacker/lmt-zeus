@@ -23,11 +23,6 @@
             <version>${reversion}</version>
         </dependency>
         <dependency>
-            <artifactId>lmt-zeus-id-generator</artifactId>
-            <groupId>com.lmt.zeus</groupId>
-            <version>${reversion}</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>

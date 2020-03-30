@@ -1,4 +1,4 @@
-package com.lmt.zeus.jpa.id;
+package com.lmt.zeus.id.jpa;
 
 import com.lmt.zeus.id.snow.UidGenerator;
 import com.lmt.zeus.parent.utils.SpringContextUtils;

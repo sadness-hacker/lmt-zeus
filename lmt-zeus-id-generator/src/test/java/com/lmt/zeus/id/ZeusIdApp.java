@@ -1,11 +1,9 @@
 package com.lmt.zeus.id;
 
-import com.lmt.zeus.mybatis.BasicMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import tk.mybatis.spring.annotation.MapperScan;
 
 /**
  * @description 测试id生成器
@@ -15,7 +13,6 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @since JDK1.8
  */
 @SpringBootApplication(scanBasePackages = "com.lmt.zeus.id")
-@MapperScan(basePackages = {"com.lmt.zeus.id"}, markerInterface = BasicMapper.class)
 @EnableTransactionManagement
 @ServletComponentScan
 public class ZeusIdApp {

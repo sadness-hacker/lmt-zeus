@@ -18,7 +18,6 @@ package com.lmt.zeus.id.snow.worker;
 import com.lmt.zeus.id.snow.utils.DockerUtils;
 import com.lmt.zeus.id.snow.utils.NetUtils;
 import com.lmt.zeus.id.snow.worker.entity.SysIdWorkerNode;
-import com.lmt.zeus.id.snow.worker.mapper.SysIdWorkerNodeMapper;
 import com.lmt.zeus.parent.common.Constants;
 import com.lmt.zeus.parent.exception.ZeusException;
 import com.lmt.zeus.parent.exception.ZeusExceptionEnum;
@@ -28,12 +27,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.io.File;
 import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
@@ -50,11 +47,8 @@ import java.util.concurrent.TimeUnit;
 @Service(value = "workerIdAssigner")
 public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
 
-    @Resource
-    private SysIdWorkerNodeMapper sysIdWorkerNodeMapper;
-
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private SysIdWorkerNodeDao sysIdWorkerNodeDao;
 
     @Value("${spring.application.name:default}")
     private String applicationName;
@@ -92,7 +86,7 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
         workerNode = readLocalWorkerId(path);
         if (workerNode != null) {
             long id = workerNode.getId();
-            SysIdWorkerNode dbEntity = sysIdWorkerNodeMapper.selectByPrimaryKey(id);
+            SysIdWorkerNode dbEntity = sysIdWorkerNodeDao.get(id);
             if (dbEntity != null
                     && workerNode.getLastTimestamp().longValue() >= dbEntity.getLastTimestamp().longValue()
                     && workerNode.getPort().equals(dbEntity.getPort())
@@ -151,7 +145,7 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
         workerNode.setLastTimestamp(System.currentTimeMillis());
         workerNode.setUpdatedTime(new Date());
         FileUtils.write(getLocalWorkerIdPath(), JSONUtils.toJson(workerNode));
-        sysIdWorkerNodeMapper.updateByPrimaryKeySelective(workerNode);
+        sysIdWorkerNodeDao.updateById(workerNode);
         log.debug("更新db/本地workerId,path={},wokerNode={}", getLocalWorkerIdPath(), workerNode);
     }
 
@@ -193,10 +187,10 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
     private int insert(SysIdWorkerNode sysIdWorkerNode) {
         for (int i = 0; i < 10; i++) {
             try {
-                Long id = sysIdWorkerNodeMapper.selectMaxId();
+                Long id = sysIdWorkerNodeDao.selectMaxId();
                 id = id == null ? 0 : id;
                 sysIdWorkerNode.setId(id + 1);
-                return sysIdWorkerNodeMapper.insertSelective(sysIdWorkerNode);
+                return sysIdWorkerNodeDao.insert(sysIdWorkerNode);
             } catch (Exception e) {
                 log.error("插入workerId出错!", e);
             }

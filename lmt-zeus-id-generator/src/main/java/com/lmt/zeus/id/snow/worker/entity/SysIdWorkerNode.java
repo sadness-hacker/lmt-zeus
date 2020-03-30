@@ -22,7 +22,6 @@ import com.lmt.zeus.id.snow.worker.WorkerNodeType;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -33,7 +32,6 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString(callSuper = true)
-@Table(name = "lmt_sys_id_worker_node")
 public class SysIdWorkerNode {
 
     /**

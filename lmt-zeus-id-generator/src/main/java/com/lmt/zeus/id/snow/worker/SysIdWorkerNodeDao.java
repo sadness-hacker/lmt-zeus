@@ -2,6 +2,7 @@ package com.lmt.zeus.id.snow.worker;
 
 import com.lmt.zeus.id.snow.worker.entity.SysIdWorkerNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -19,7 +20,7 @@ import java.util.List;
 @Repository
 public class SysIdWorkerNodeDao {
 
-    private static final String COLUMNS = " id,host_name as hostName,port,type,launch_date as launchDate,created_time as createdTime,updated_time as updatedTime,last_timestamp as lastTimestamp ";
+    private static final String COLUMNS = "id, host_name as hostName, port, type, launch_date as launchDate, created_time as createdTime, updated_time as updatedTime, last_timestamp as lastTimestamp";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -47,7 +48,7 @@ public class SysIdWorkerNodeDao {
             return null;
         }
         String sql = "select " + COLUMNS + " from lmt_sys_id_worker_node where id = ?";
-        return jdbcTemplate.queryForObject(sql, SysIdWorkerNode.class, id);
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(SysIdWorkerNode.class), id);
     }
 
     /**

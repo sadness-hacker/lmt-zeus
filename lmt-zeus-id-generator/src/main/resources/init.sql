@@ -13,5 +13,6 @@ create table lmt_sys_id_worker_node (
 
 create table lmt_sys_test_id (
   id bigint not null comment 'id',
-  created_time timestamp not null DEFAULT CURRENT_TIMESTAMP comment '创建时间'
+  created_time timestamp not null DEFAULT CURRENT_TIMESTAMP comment '创建时间',
+  updated_time timestamp not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '最后更新时间'
 ) COMMENT='雪花算法id生成器测试表', ENGINE = INNODB;
