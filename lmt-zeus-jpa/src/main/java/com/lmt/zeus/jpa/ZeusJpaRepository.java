@@ -45,7 +45,6 @@ public class ZeusJpaRepository<T, ID> extends SimpleJpaRepository<T, ID> {
     public <S extends T> S save(S entity) {
         ID id = (ID) jpaEntityInformation.getId(entity);
         if (id != null) {
-
             Optional<T> op = findById(id);
             if (op.isPresent()) {
                 T t = op.get();
