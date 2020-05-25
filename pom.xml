@@ -16,7 +16,6 @@
     <modules>
         <module>lmt-zeus-parent</module>
         <module>lmt-zeus-mybatis</module>
-        <module>lmt-zeus-auth</module>
         <module>lmt-zeus-id-generator</module>
         <module>lmt-zeus-security</module>
         <module>lmt-zeus-sso-server</module>
