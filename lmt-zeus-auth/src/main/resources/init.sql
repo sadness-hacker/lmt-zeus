@@ -10,7 +10,7 @@ CREATE TABLE `lmt_sys_user` (
   `updated_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=UTF8 comment='用户表';
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8 review='用户表';
 
 CREATE TABLE `lmt_sys_resource` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',

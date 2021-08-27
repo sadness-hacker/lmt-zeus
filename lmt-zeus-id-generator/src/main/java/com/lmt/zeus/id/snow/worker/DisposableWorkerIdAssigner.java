@@ -84,7 +84,7 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
         // 1.读取本地缓存的id
         String path = getLocalWorkerIdPath();
         workerNode = readLocalWorkerId(path);
-        if (workerNode != null) {
+        if (workerNode != null && workerNode.getId() != null) {
             long id = workerNode.getId();
             SysIdWorkerNode dbEntity = sysIdWorkerNodeDao.get(id);
             if (dbEntity != null

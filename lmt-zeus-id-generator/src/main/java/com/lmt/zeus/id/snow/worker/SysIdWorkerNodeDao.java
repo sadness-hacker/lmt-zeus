@@ -2,6 +2,7 @@ package com.lmt.zeus.id.snow.worker;
 
 import com.lmt.zeus.id.snow.worker.entity.SysIdWorkerNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -47,8 +48,12 @@ public class SysIdWorkerNodeDao {
         if (id == null) {
             return null;
         }
-        String sql = "select " + COLUMNS + " from lmt_sys_id_worker_node where id = ?";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(SysIdWorkerNode.class), id);
+        try {
+            String sql = "select " + COLUMNS + " from lmt_sys_id_worker_node where id = ?";
+            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(SysIdWorkerNode.class), id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     /**

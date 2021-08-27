@@ -8,6 +8,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -185,4 +186,28 @@ public class HttpUtils {
         }
         return null;
     }
+
+    public static String postBody(String url, Map<String, String> headers, String body) {
+        HttpClient client = HttpClients.createDefault();
+        HttpPost post = new HttpPost(url);
+        post.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
+        for (Map.Entry<String, String> header : headers.entrySet()) {
+            post.addHeader(header.getKey(), header.getValue());
+        }
+        try {
+            HttpResponse response = client.execute(post);
+            StatusLine statusLine = response.getStatusLine();
+            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                HttpEntity entity = response.getEntity();
+                String result = EntityUtils.toString(entity, "UTF-8");
+                return result;
+            }
+        } catch (Exception e) {
+            throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
+                    .set("url", url)
+                    .set("body", body);
+        }
+        return null;
+    }
+
 }

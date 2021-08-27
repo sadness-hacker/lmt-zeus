@@ -27,6 +27,12 @@ public class ZeusIdentifierGenerator implements IdentifierGenerator {
      */
     @Override
     public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
+        // 1.已存在指定id，直接返回
+        Serializable id = session.getEntityPersister(null, object).getClassMetadata().getIdentifier(object, session);
+        if (id != null) {
+            return id;
+        }
+        // 2.不存在指定id，生成新id返回
         UidGenerator uidGenerator = SpringContextUtils.getBean("uidGenerator", UidGenerator.class);
         return uidGenerator.getUID();
     }

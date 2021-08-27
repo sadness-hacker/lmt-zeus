@@ -30,13 +30,21 @@ public class Result<T> implements Serializable {
     /**
      * 错误信息
      */
-    private String msg = "调用成功";
+    private String msg = "success";
     /**
      * 返回值:
      * 失败时为null
      * 成功时为返回值
      */
     private T data;
+
+    public Result() {
+
+    }
+
+    public Result(T data) {
+        this.data = data;
+    }
 
     /**
      * 设置返回数据
