@@ -210,4 +210,24 @@ public class HttpUtils {
         return null;
     }
 
+    public static String getWithHeaders(String url, Map<String, String> headers) {
+        HttpGet get = new HttpGet(url);
+        for (Map.Entry<String, String> header : headers.entrySet()) {
+            get.addHeader(header.getKey(), header.getValue());
+        }
+        try {
+            HttpResponse response = client.execute(get);
+            StatusLine statusLine = response.getStatusLine();
+            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                HttpEntity entity = response.getEntity();
+                String result = EntityUtils.toString(entity, "UTF-8");
+                return result;
+            }
+        } catch (Exception e) {
+            throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
+                    .set("url", url);
+        }
+        return null;
+    }
+
 }
