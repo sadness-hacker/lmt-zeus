@@ -11,6 +11,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
 
@@ -144,7 +145,7 @@ public class SecurityUtils {
             cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(keygen.generateKey().getEncoded(), "AES"));
             byte [] byteArr = Base64.getDecoder().decode(content);
             byte [] decodeArr = cipher.doFinal(byteArr);
-            String decode = new String(decodeArr,"utf-8");
+            String decode = new String(decodeArr, StandardCharsets.UTF_8);
             return decode;
         } catch (Exception e) {
             throw ZeusException.wrap(ZeusExceptionEnum.AES_DECODE_ERROR.getCode(), ZeusExceptionEnum.AES_DECODE_ERROR.getMsg(), e)

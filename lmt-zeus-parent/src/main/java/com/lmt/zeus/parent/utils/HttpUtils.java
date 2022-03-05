@@ -2,6 +2,7 @@ package com.lmt.zeus.parent.utils;
 
 import com.lmt.zeus.parent.exception.ZeusExceptionEnum;
 import com.lmt.zeus.parent.exception.ZeusException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -51,7 +52,7 @@ public class HttpUtils {
      */
     public static String post(HttpClient client, String url, Map<String, Object> param) {
         HttpPost post = new HttpPost(url);
-        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
+        RequestConfig requestConfig = RequestConfig.custom().setProxy(buildProxy(url)).setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
         post.setConfig(requestConfig);
         //设置参数
         List<NameValuePair> list = new ArrayList<>();
@@ -141,7 +142,7 @@ public class HttpUtils {
             }
         }
         HttpGet get = new HttpGet(url);
-        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
+        RequestConfig requestConfig = RequestConfig.custom().setProxy(buildProxy(url)).setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
         get.setConfig(requestConfig);
         try {
             HttpResponse response = client.execute(get);
@@ -170,6 +171,8 @@ public class HttpUtils {
     public static String postBody(String url, String body) {
         HttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(url);
+        RequestConfig requestConfig = RequestConfig.custom().setProxy(buildProxy(url)).setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
+        post.setConfig(requestConfig);
         post.setEntity(new StringEntity(body, "UTF-8"));
         try {
             HttpResponse response = client.execute(post);
@@ -190,6 +193,8 @@ public class HttpUtils {
     public static String postBody(String url, Map<String, String> headers, String body) {
         HttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(url);
+        RequestConfig requestConfig = RequestConfig.custom().setProxy(buildProxy(url)).setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
+        post.setConfig(requestConfig);
         post.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
         for (Map.Entry<String, String> header : headers.entrySet()) {
             post.addHeader(header.getKey(), header.getValue());
@@ -212,6 +217,8 @@ public class HttpUtils {
 
     public static String getWithHeaders(String url, Map<String, String> headers) {
         HttpGet get = new HttpGet(url);
+        RequestConfig requestConfig = RequestConfig.custom().setProxy(buildProxy(url)).setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
+        get.setConfig(requestConfig);
         for (Map.Entry<String, String> header : headers.entrySet()) {
             get.addHeader(header.getKey(), header.getValue());
         }
@@ -226,6 +233,28 @@ public class HttpUtils {
         } catch (Exception e) {
             throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
                     .set("url", url);
+        }
+        return null;
+    }
+
+    /**
+     * 从启动参数里获取代理服务地址、端口,如果存在则返回代理服务器,否则返回null
+     * @author bazhandao
+     * @date 2022-03-04
+     * @param url
+     * @return
+     */
+    private static HttpHost buildProxy(String url) {
+//        -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=1087 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=1087
+        String host = System.getProperty("http.proxyHost");
+        String port = System.getProperty("http.proxyPort");
+        if (StringUtils.isNotBlank(host) && StringUtils.isNotBlank(port)) {
+            return new HttpHost(host, Integer.parseInt(port), "http");
+        }
+        host = System.getProperty("https.proxyHost");
+        port = System.getProperty("https.proxyPort");
+        if (StringUtils.isNotBlank(host) && StringUtils.isNotBlank(port)) {
+            return new HttpHost(host, Integer.parseInt(port), "https");
         }
         return null;
     }
