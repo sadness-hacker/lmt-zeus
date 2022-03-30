@@ -25,12 +25,12 @@ import com.lmt.zeus.parent.utils.FileUtils;
 import com.lmt.zeus.parent.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.io.File;
 import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
@@ -47,7 +47,7 @@ import java.util.concurrent.TimeUnit;
 @Service(value = "workerIdAssigner")
 public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
 
-    @Autowired
+    @Resource
     private SysIdWorkerNodeDao sysIdWorkerNodeDao;
 
     @Value("${spring.application.name:default}")

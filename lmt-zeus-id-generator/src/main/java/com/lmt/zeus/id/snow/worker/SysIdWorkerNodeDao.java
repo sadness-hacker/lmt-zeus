@@ -1,11 +1,9 @@
 package com.lmt.zeus.id.snow.worker;
 
 import com.lmt.zeus.id.snow.worker.entity.SysIdWorkerNode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,13 +16,15 @@ import java.util.List;
  * @date 2020/3/27 21:21
  * @since JDK1.8
  */
-@Repository
 public class SysIdWorkerNodeDao {
 
     private static final String COLUMNS = "id, host_name as hostName, port, type, launch_date as launchDate, created_time as createdTime, updated_time as updatedTime, last_timestamp as lastTimestamp";
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    public SysIdWorkerNodeDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     /**
      * 查寻当前最大的ID
