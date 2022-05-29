@@ -2,6 +2,7 @@ package com.lmt.zeus.parent.utils;
 
 import com.lmt.zeus.parent.exception.ZeusExceptionEnum;
 import com.lmt.zeus.parent.exception.ZeusException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
@@ -26,6 +27,7 @@ import java.util.Map;
  * @date 2018/11/10 15:58
  * @since JDK1.8
  */
+@Slf4j
 public class HttpUtils {
 
     private static HttpClient client = HttpClients.createDefault();
@@ -202,10 +204,12 @@ public class HttpUtils {
         try {
             HttpResponse response = client.execute(post);
             StatusLine statusLine = response.getStatusLine();
-            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+            if (statusLine.getStatusCode() == HttpStatus.SC_OK){
                 HttpEntity entity = response.getEntity();
                 String result = EntityUtils.toString(entity, "UTF-8");
                 return result;
+            } else {
+                log.error("post请求失败,url={}, reason={} {}", url, statusLine.getStatusCode(), statusLine.getReasonPhrase());
             }
         } catch (Exception e) {
             throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)

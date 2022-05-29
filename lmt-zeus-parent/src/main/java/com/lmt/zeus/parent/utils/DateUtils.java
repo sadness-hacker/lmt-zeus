@@ -80,6 +80,17 @@ public class DateUtils {
     }
 
     /**
+     * 解析yyyy-MM-dd格式日期
+     * @author bazhandao
+     * @date 2022-04-03
+     * @param dateStr
+     * @return
+     */
+    public static Date parseYYYY_MM_DD(String dateStr) {
+        return parse(dateStr, YYYY_MM_DD);
+    }
+
+    /**
      * 根据字符串解析为日期
      * @author bazhandao
      * @date 2018-11-10
