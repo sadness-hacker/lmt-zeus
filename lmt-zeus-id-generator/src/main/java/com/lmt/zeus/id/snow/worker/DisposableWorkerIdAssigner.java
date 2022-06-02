@@ -142,6 +142,9 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
      * @date 2019-11-17
      */
     private void updateWorkerId() {
+        if (System.currentTimeMillis() < workerNode.getLastTimestamp()) {
+            throw ZeusException.wrap(8891, "更新雪花算法id出错,时间出现回调!");
+        }
         workerNode.setLastTimestamp(System.currentTimeMillis());
         workerNode.setUpdatedTime(new Date());
         FileUtils.write(getLocalWorkerIdPath(), JSONUtils.toJson(workerNode));
