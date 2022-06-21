@@ -13,7 +13,7 @@
     <artifactId>lmt-zeus-id-generator</artifactId>
 
     <properties>
-        <mysql-connector-java>8.0.17</mysql-connector-java>
+        <mysql-connector-java>8.0.28</mysql-connector-java>
     </properties>
 
     <dependencies>
