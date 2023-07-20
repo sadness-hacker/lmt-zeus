@@ -32,7 +32,7 @@
         <lombok>1.18.20</lombok>
         <guava>27.0-jre</guava>
         <commons-lang3>3.8.1</commons-lang3>
-        <logback-core>1.2.3</logback-core>
+        <logback-core>1.2.9</logback-core>
         <logback-classic>1.2.3</logback-classic>
         <slf4j-api>1.7.25</slf4j-api>
         <jackson>2.10.0</jackson>
