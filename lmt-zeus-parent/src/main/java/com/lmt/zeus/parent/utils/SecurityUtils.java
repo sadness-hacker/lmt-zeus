@@ -42,6 +42,15 @@ public class SecurityUtils {
     }
 
     /**
+     * 获取字符串的md5值,转为Long型,正数
+     * @param str
+     * @return
+     */
+    public static long md5ToLong(String str) {
+        return Math.abs(Hashing.md5().newHasher().putString(str, Charsets.UTF_8).hash().asLong());
+    }
+
+    /**
      * 获取字符串的md5值 16位小写
      * @author bazhandao
      * @date 2018-11-10

@@ -40,6 +40,7 @@ public class SysIdWorkerNodeDaoBuilder {
             config.addDataSourceProperty("cachePrepStmts", "true");
             config.addDataSourceProperty("prepStmtCacheSize", "50");
             config.addDataSourceProperty("prepStmtCacheSqlLimit", "128");
+            config.setMaximumPoolSize(3);
             return new SysIdWorkerNodeDao(new JdbcTemplate(new HikariDataSource(config)));
         }
         // 默认配置
