@@ -7,8 +7,9 @@ import com.lmt.zeus.id.snow.worker.SysIdWorkerNodeDao;
 import com.lmt.zeus.id.snow.worker.SysIdWorkerNodeDaoBuilder;
 import com.lmt.zeus.id.snow.worker.WorkerIdAssigner;
 import com.lmt.zeus.parent.utils.SpringContextUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -24,11 +25,12 @@ import javax.annotation.Resource;
  * @date 2019/11/15 16:44
  * @since JDK1.8
  */
-@Slf4j
 @ConditionalOnProperty(value = "lmt.zeus.id.generator-type", havingValue = "zeusIdGenerator")
 @ComponentScan(value = "com.lmt.zeus.id")
 @Configuration
 public class SnowFlakeIdGeneratorConfiguration {
+
+    private static Logger log = LoggerFactory.getLogger(SnowFlakeIdGeneratorConfiguration.class);
 
     @Resource
     private SnowFlakeProperties snowFlakeProperties;

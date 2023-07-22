@@ -1,7 +1,5 @@
 package com.lmt.zeus.parent.exception;
 
-import lombok.Getter;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +9,6 @@ import java.util.Map;
  * @date 2018/11/8 17:40
  * @since JDK1.8
  */
-@Getter
 public class ZeusException extends RuntimeException{
     /**
      * 异常码
@@ -126,5 +123,17 @@ public class ZeusException extends RuntimeException{
             builder.append(k).append("=").append(v).append("\n");
         });
         return builder.append(super.toString()).toString();
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public Map<String, Object> getAttachment() {
+        return attachment;
     }
 }

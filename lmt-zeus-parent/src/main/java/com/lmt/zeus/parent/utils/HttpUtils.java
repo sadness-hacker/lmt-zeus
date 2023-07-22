@@ -2,7 +2,6 @@ package com.lmt.zeus.parent.utils;
 
 import com.lmt.zeus.parent.exception.ZeusExceptionEnum;
 import com.lmt.zeus.parent.exception.ZeusException;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
@@ -15,6 +14,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,9 @@ import java.util.Map;
  * @date 2018/11/10 15:58
  * @since JDK1.8
  */
-@Slf4j
 public class HttpUtils {
+
+    private static Logger log = LoggerFactory.getLogger(HttpUtils.class);
 
     private static HttpClient client = HttpClients.createDefault();
 

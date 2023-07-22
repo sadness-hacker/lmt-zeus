@@ -23,8 +23,9 @@ import com.lmt.zeus.parent.exception.ZeusException;
 import com.lmt.zeus.parent.exception.ZeusExceptionEnum;
 import com.lmt.zeus.parent.utils.FileUtils;
 import com.lmt.zeus.parent.utils.JSONUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,9 +44,10 @@ import java.util.concurrent.TimeUnit;
  *
  * @author yutianbao
  */
-@Slf4j
 @Service(value = "workerIdAssigner")
 public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
+
+    private static Logger log = LoggerFactory.getLogger(DisposableWorkerIdAssigner.class);
 
     @Resource
     private SysIdWorkerNodeDao sysIdWorkerNodeDao;

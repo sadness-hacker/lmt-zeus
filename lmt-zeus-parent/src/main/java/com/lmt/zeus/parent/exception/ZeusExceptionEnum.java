@@ -1,14 +1,11 @@
 package com.lmt.zeus.parent.exception;
 
-import lombok.Getter;
-
 /**
  * @description 基础异常枚举类
  * @author bazhandao
  * @date 2018/11/8 17:41
  * @since JDK1.8
  */
-@Getter
 public enum ZeusExceptionEnum {
 
     ERROR(9999, "系统异常"),
@@ -41,8 +38,16 @@ public enum ZeusExceptionEnum {
      */
     private String msg;
 
-    private ZeusExceptionEnum(int code, String msg) {
+    ZeusExceptionEnum(int code, String msg) {
         this.code = code;
         this.msg = msg;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
     }
 }

@@ -1,8 +1,5 @@
 package com.lmt.zeus.parent;
 
-import lombok.Getter;
-import lombok.ToString;
-
 import java.io.Serializable;
 
 /**
@@ -11,8 +8,6 @@ import java.io.Serializable;
  * @date 2018/11/8 17:34
  * @since JDK1.8
  */
-@Getter
-@ToString(callSuper = true)
 public class Result<T> implements Serializable {
 
     /**
@@ -65,4 +60,19 @@ public class Result<T> implements Serializable {
         this.msg = msg;
     }
 
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public T getData() {
+        return data;
+    }
 }

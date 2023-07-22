@@ -1,7 +1,5 @@
 package com.lmt.zeus.id.snow.config;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -13,8 +11,6 @@ import org.springframework.stereotype.Component;
  * @date 2022/3/30 16:50
  * @since JDK1.8
  */
-@Getter
-@Setter
 @Primary
 @Component
 @ConfigurationProperties(prefix = "lmt.zeus.id.snowflake.datasource")
@@ -37,4 +33,43 @@ public class SnowFlakeDataSourceProperties {
 
     private String driverClassName;
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getDriverClassName() {
+        return driverClassName;
+    }
+
+    public void setDriverClassName(String driverClassName) {
+        this.driverClassName = driverClassName;
+    }
 }

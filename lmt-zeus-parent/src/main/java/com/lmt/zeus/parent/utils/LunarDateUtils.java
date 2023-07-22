@@ -1,6 +1,7 @@
 package com.lmt.zeus.parent.utils;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -15,8 +16,10 @@ import java.util.Date;
  * @date 2019/10/31 09:30
  * @since JDK1.8
  */
-@Slf4j
 public class LunarDateUtils {
+
+    private static Logger log = LoggerFactory.getLogger(LunarDateUtils.class);
+
     /**
      * 将月份第十三位规定为闰月大小
      */

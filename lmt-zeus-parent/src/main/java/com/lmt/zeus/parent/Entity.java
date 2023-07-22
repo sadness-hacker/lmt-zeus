@@ -1,9 +1,5 @@
 package com.lmt.zeus.parent;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import java.io.Serializable;
 
 /**
@@ -13,9 +9,6 @@ import java.io.Serializable;
  * @date 2018/11/8 17:32
  * @since JDK1.8
  */
-@Getter
-@Setter
-@ToString(callSuper = true)
 public class Entity implements Serializable {
 
 }

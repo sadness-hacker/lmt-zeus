@@ -22,7 +22,6 @@ import com.lmt.zeus.id.snow.buffer.RejectedPutBufferHandler;
 import com.lmt.zeus.id.snow.buffer.RejectedTakeBufferHandler;
 import com.lmt.zeus.id.snow.buffer.RingBuffer;
 import com.lmt.zeus.id.snow.exception.UidGenerateException;
-import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -48,7 +47,6 @@ import java.util.List;
  *
  * @author yutianbao
  */
-@Setter
 public class CachedUidGenerator extends DefaultUidGenerator implements DisposableBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(CachedUidGenerator.class);
     private static final int DEFAULT_BOOST_POWER = 3;
@@ -172,4 +170,7 @@ public class CachedUidGenerator extends DefaultUidGenerator implements Disposabl
         this.scheduleInterval = scheduleInterval;
     }
 
+    public void setPaddingFactor(int paddingFactor) {
+        this.paddingFactor = paddingFactor;
+    }
 }

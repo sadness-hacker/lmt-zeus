@@ -1,7 +1,5 @@
 package com.lmt.zeus.id.snow.config;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -13,8 +11,6 @@ import org.springframework.stereotype.Component;
  * @date 2019/11/15 17:00
  * @since JDK1.8
  */
-@Getter
-@Setter
 @Primary
 @Component
 @ConfigurationProperties(prefix = "lmt.zeus.id.snowflake")
@@ -75,4 +71,83 @@ public class SnowFlakeProperties {
      */
     private String rejectedTakeBufferHandler;
 
+    public String getGeneratorType() {
+        return generatorType;
+    }
+
+    public void setGeneratorType(String generatorType) {
+        this.generatorType = generatorType;
+    }
+
+    public int getTimeBits() {
+        return timeBits;
+    }
+
+    public void setTimeBits(int timeBits) {
+        this.timeBits = timeBits;
+    }
+
+    public int getWorkerBits() {
+        return workerBits;
+    }
+
+    public void setWorkerBits(int workerBits) {
+        this.workerBits = workerBits;
+    }
+
+    public int getSeqBits() {
+        return seqBits;
+    }
+
+    public void setSeqBits(int seqBits) {
+        this.seqBits = seqBits;
+    }
+
+    public String getEpochStr() {
+        return epochStr;
+    }
+
+    public void setEpochStr(String epochStr) {
+        this.epochStr = epochStr;
+    }
+
+    public int getBoostPower() {
+        return boostPower;
+    }
+
+    public void setBoostPower(int boostPower) {
+        this.boostPower = boostPower;
+    }
+
+    public int getPaddingFactor() {
+        return paddingFactor;
+    }
+
+    public void setPaddingFactor(int paddingFactor) {
+        this.paddingFactor = paddingFactor;
+    }
+
+    public int getScheduleInterval() {
+        return scheduleInterval;
+    }
+
+    public void setScheduleInterval(int scheduleInterval) {
+        this.scheduleInterval = scheduleInterval;
+    }
+
+    public String getRejectedPutBufferHandler() {
+        return rejectedPutBufferHandler;
+    }
+
+    public void setRejectedPutBufferHandler(String rejectedPutBufferHandler) {
+        this.rejectedPutBufferHandler = rejectedPutBufferHandler;
+    }
+
+    public String getRejectedTakeBufferHandler() {
+        return rejectedTakeBufferHandler;
+    }
+
+    public void setRejectedTakeBufferHandler(String rejectedTakeBufferHandler) {
+        this.rejectedTakeBufferHandler = rejectedTakeBufferHandler;
+    }
 }

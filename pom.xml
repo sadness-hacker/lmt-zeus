@@ -6,11 +6,11 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.12.RELEASE</version>
+        <version>3.1.2</version>
     </parent>
     <groupId>com.lmt.zeus</groupId>
     <artifactId>lmt-zeus</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -26,28 +26,22 @@
     </modules>
 
     <properties>
-        <reversion>1.0.0-SNAPSHOT</reversion>
+        <reversion>2.0.0-SNAPSHOT</reversion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <lombok>1.18.20</lombok>
-        <guava>27.0-jre</guava>
-        <commons-lang3>3.8.1</commons-lang3>
-        <logback-core>1.2.3</logback-core>
-        <logback-classic>1.2.3</logback-classic>
-        <slf4j-api>1.7.25</slf4j-api>
-        <jackson>2.10.0</jackson>
-        <commons-io>2.6</commons-io>
+        <guava>32.1.1-jre</guava>
+        <commons-lang3>3.12.0</commons-lang3>
+        <logback-core>1.4.8</logback-core>
+        <logback-classic>1.4.8</logback-classic>
+        <slf4j-api>2.0.7</slf4j-api>
+        <jackson>2.15.2</jackson>
+        <commons-io>2.13.0</commons-io>
         <httpcore>4.4.10</httpcore>
         <httpclient>4.5.6</httpclient>
-        <junit>4.12</junit>
+        <junit>4.13.2</junit>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok}</version>
-        </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -121,17 +115,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.11.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>21</source>
+                    <target>21</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -144,20 +138,20 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.2</version>
+                <version>3.1.1</version>
             </plugin>
         </plugins>
     </build>
-    <distributionManagement>
-        <repository>
-            <id>nexus-releases</id>
-            <name>Xiaoxuan Nexus Releases Repository</name>
-            <url>http://db02/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <name>Xiaoxuan Nexus Snapshots Repository</name>
-            <url>http://db02/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
+<!--    <distributionManagement>-->
+<!--        <repository>-->
+<!--            <id>nexus-releases</id>-->
+<!--            <name>Wuti Nexus Releases Repository</name>-->
+<!--            <url>http://maven.aliyun.com/repository/maven-releases/</url>-->
+<!--        </repository>-->
+<!--        <snapshotRepository>-->
+<!--            <id>nexus-snapshots</id>-->
+<!--            <name>Wuti Nexus Snapshots Repository</name>-->
+<!--            <url>http://maven.aliyun.com/repository/maven-snapshots/</url>-->
+<!--        </snapshotRepository>-->
+<!--    </distributionManagement>-->
 </project>
