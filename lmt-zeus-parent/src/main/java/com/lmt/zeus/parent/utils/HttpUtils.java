@@ -2,21 +2,14 @@ package com.lmt.zeus.parent.utils;
 
 import com.lmt.zeus.parent.exception.ZeusExceptionEnum;
 import com.lmt.zeus.parent.exception.ZeusException;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.*;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +23,11 @@ import java.util.Map;
  */
 public class HttpUtils {
 
-    private static Logger log = LoggerFactory.getLogger(HttpUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
 
-    private static HttpClient client = HttpClients.createDefault();
+    private static final HttpClient client = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(30))
+            .build();
 
     /**
      * 发送post请求，form表单格式
@@ -55,25 +50,21 @@ public class HttpUtils {
      * @return
      */
     public static String post(HttpClient client, String url, Map<String, Object> param) {
-        HttpPost post = new HttpPost(url);
-        RequestConfig requestConfig = RequestConfig.custom().setProxy(buildProxy(url)).setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
-        post.setConfig(requestConfig);
         //设置参数
-        List<NameValuePair> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         for(Map.Entry<String, Object> e : param.entrySet()){
-            list.add(new BasicNameValuePair(e.getKey(),String.valueOf(e.getValue())));
+            list.add(e.getKey() + "=" + e.getValue());
         }
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .timeout(Duration.ofSeconds(20))
+                .header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
+                .POST(HttpRequest.BodyPublishers.ofString(String.join("&", list)))
+                .build();
         try {
-            if(list.size() > 0){
-                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(list,"UTF-8");
-                post.setEntity(entity);
-            }
-            HttpResponse response = client.execute(post);
-            HttpEntity entity = response.getEntity();
-            StatusLine statusLine = response.getStatusLine();
-            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-                String result = EntityUtils.toString(entity, "UTF-8");
-                return result;
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if(response.statusCode() == 200){
+                return response.body();
             }
         } catch (Exception e) {
             throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
@@ -91,8 +82,7 @@ public class HttpUtils {
      * @return
      */
     public static String get(String url) {
-        HttpClient client = HttpClients.createDefault();
-        return get(client,url,null);
+        return get(client, url,null);
     }
 
     /**
@@ -104,8 +94,7 @@ public class HttpUtils {
      * @return
      */
     public static String get(String url, Map<String, Object> param) {
-        HttpClient client = HttpClients.createDefault();
-        return get(client,url,param);
+        return get(client, url, param);
     }
 
     /**
@@ -138,23 +127,22 @@ public class HttpUtils {
         }
         String query = sb.toString();
         if(query.length() >= 1){
-            if(url.indexOf("?") == -1){
+            if(!url.contains("?")){
                 query = query.replaceFirst("&", "");
                 url = url + "?" + query;
-            }else{
+            } else {
                 url = url + query;
             }
         }
-        HttpGet get = new HttpGet(url);
-        RequestConfig requestConfig = RequestConfig.custom().setProxy(buildProxy(url)).setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
-        get.setConfig(requestConfig);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .timeout(Duration.ofSeconds(20))
+                .GET()
+                .build();
         try {
-            HttpResponse response = client.execute(get);
-            HttpEntity entity = response.getEntity();
-            StatusLine statusLine = response.getStatusLine();
-            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-                String result = EntityUtils.toString(entity, "UTF-8");
-                return result;
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if(response.statusCode() == 200){
+                return response.body();
             }
         } catch (Exception e) {
             throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
@@ -173,18 +161,16 @@ public class HttpUtils {
      * @return
      */
     public static String postBody(String url, String body) {
-        HttpClient client = HttpClients.createDefault();
-        HttpPost post = new HttpPost(url);
-        RequestConfig requestConfig = RequestConfig.custom().setProxy(buildProxy(url)).setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
-        post.setConfig(requestConfig);
-        post.setEntity(new StringEntity(body, "UTF-8"));
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .timeout(Duration.ofSeconds(20))
+                .header("Content-Type", "application/json;charset=UTF-8")
+                .POST(HttpRequest.BodyPublishers.ofString(body))
+                .build();
         try {
-            HttpResponse response = client.execute(post);
-            StatusLine statusLine = response.getStatusLine();
-            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-                HttpEntity entity = response.getEntity();
-                String result = EntityUtils.toString(entity, "UTF-8");
-                return result;
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if(response.statusCode() == 200){
+                return response.body();
             }
         } catch (Exception e) {
             throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
@@ -195,23 +181,21 @@ public class HttpUtils {
     }
 
     public static String postBody(String url, Map<String, String> headers, String body) {
-        HttpClient client = HttpClients.createDefault();
-        HttpPost post = new HttpPost(url);
-        RequestConfig requestConfig = RequestConfig.custom().setProxy(buildProxy(url)).setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
-        post.setConfig(requestConfig);
-        post.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
+        HttpRequest.Builder builder = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .timeout(Duration.ofSeconds(20))
+                .header("Content-Type", "application/json;charset=UTF-8")
+                .POST(HttpRequest.BodyPublishers.ofString(body));
         for (Map.Entry<String, String> header : headers.entrySet()) {
-            post.addHeader(header.getKey(), header.getValue());
+            builder = builder.header(header.getKey(), header.getValue());
         }
         try {
-            HttpResponse response = client.execute(post);
-            StatusLine statusLine = response.getStatusLine();
-            if (statusLine.getStatusCode() == HttpStatus.SC_OK){
-                HttpEntity entity = response.getEntity();
-                String result = EntityUtils.toString(entity, "UTF-8");
-                return result;
+            HttpRequest request = builder.build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200){
+                return response.body();
             } else {
-                log.error("post请求失败,url={}, reason={} {}", url, statusLine.getStatusCode(), statusLine.getReasonPhrase());
+                log.error("post请求失败,url={}, {}", url, response.statusCode());
             }
         } catch (Exception e) {
             throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
@@ -222,45 +206,23 @@ public class HttpUtils {
     }
 
     public static String getWithHeaders(String url, Map<String, String> headers) {
-        HttpGet get = new HttpGet(url);
-        RequestConfig requestConfig = RequestConfig.custom().setProxy(buildProxy(url)).setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
-        get.setConfig(requestConfig);
+        HttpRequest.Builder builder = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .timeout(Duration.ofSeconds(20))
+                .GET();
         for (Map.Entry<String, String> header : headers.entrySet()) {
-            get.addHeader(header.getKey(), header.getValue());
+            builder = builder.header(header.getKey(), header.getValue());
         }
         try {
-            HttpResponse response = client.execute(get);
-            StatusLine statusLine = response.getStatusLine();
-            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-                HttpEntity entity = response.getEntity();
-                String result = EntityUtils.toString(entity, "UTF-8");
-                return result;
+            HttpResponse<String> response = client.send(builder.build(), HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200){
+                return response.body();
+            } else {
+                log.error("get请求失败,url={}, {}", url, response.statusCode());
             }
         } catch (Exception e) {
             throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
                     .set("url", url);
-        }
-        return null;
-    }
-
-    /**
-     * 从启动参数里获取代理服务地址、端口,如果存在则返回代理服务器,否则返回null
-     * @author bazhandao
-     * @date 2022-03-04
-     * @param url
-     * @return
-     */
-    private static HttpHost buildProxy(String url) {
-//        -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=1087 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=1087
-        String host = System.getProperty("http.proxyHost");
-        String port = System.getProperty("http.proxyPort");
-        if (StringUtils.isNotBlank(host) && StringUtils.isNotBlank(port)) {
-            return new HttpHost(host, Integer.parseInt(port), "http");
-        }
-        host = System.getProperty("https.proxyHost");
-        port = System.getProperty("https.proxyPort");
-        if (StringUtils.isNotBlank(host) && StringUtils.isNotBlank(port)) {
-            return new HttpHost(host, Integer.parseInt(port), "https");
         }
         return null;
     }

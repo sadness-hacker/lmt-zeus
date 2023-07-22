@@ -36,8 +36,6 @@
         <slf4j-api>2.0.7</slf4j-api>
         <jackson>2.15.2</jackson>
         <commons-io>2.13.0</commons-io>
-        <httpcore>4.4.10</httpcore>
-        <httpclient>4.5.6</httpclient>
         <junit>4.13.2</junit>
     </properties>
 
@@ -86,21 +84,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore-nio</artifactId>
-            <version>${httpcore}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${httpclient}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>${httpclient}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
