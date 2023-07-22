@@ -16,9 +16,9 @@
 package com.lmt.zeus.id.snow.worker.entity;
 
 import com.lmt.zeus.id.snow.worker.WorkerNodeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import java.util.Date;
 
 /**

@@ -1,16 +1,17 @@
 package com.lmt.zeus.jpa.config;
 
 import com.lmt.zeus.jpa.annotation.JpaDto;
-import lombok.extern.slf4j.Slf4j;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.FatalBeanException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.convert.support.GenericConversionService;
 
-import javax.annotation.PostConstruct;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -23,11 +24,12 @@ import java.util.Map;
  * @date 2020/3/26 17:51
  * @since JDK1.8
  */
-@Slf4j
 @Configuration
 public class ZeusJpaConfiguration {
 
-    @Autowired
+    private final Logger log = LoggerFactory.getLogger(ZeusJpaConfiguration.class);
+
+    @Resource
     private ApplicationContext applicationContext;
 
     /**

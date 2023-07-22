@@ -7,6 +7,7 @@ import com.lmt.zeus.id.snow.worker.SysIdWorkerNodeDao;
 import com.lmt.zeus.id.snow.worker.SysIdWorkerNodeDaoBuilder;
 import com.lmt.zeus.id.snow.worker.WorkerIdAssigner;
 import com.lmt.zeus.parent.utils.SpringContextUtils;
+import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +16,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.Resource;
 
 /**
  * @description id生成器配置类

@@ -3,10 +3,9 @@ package com.lmt.zeus.id.snow.worker;
 import com.lmt.zeus.id.snow.config.SnowFlakeDataSourceProperties;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import jakarta.annotation.Resource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 /**
  * @description SysIdWorkerNodeDaoBuilder

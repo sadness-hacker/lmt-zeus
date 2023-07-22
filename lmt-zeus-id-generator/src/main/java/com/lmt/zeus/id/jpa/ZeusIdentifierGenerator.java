@@ -6,8 +6,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
-import java.io.Serializable;
-
 /**
  * @description 基于雪花算法生成id
  *
@@ -26,9 +24,9 @@ public class ZeusIdentifierGenerator implements IdentifierGenerator {
      * @throws HibernateException Indicates trouble generating the identifier
      */
     @Override
-    public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
+    public Object generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
         // 1.已存在指定id，直接返回
-        Serializable id = session.getEntityPersister(null, object).getClassMetadata().getIdentifier(object, session);
+        Object id = session.getEntityPersister(null, object).getClassMetadata().getIdentifier(object, session);
         if (id != null) {
             return id;
         }

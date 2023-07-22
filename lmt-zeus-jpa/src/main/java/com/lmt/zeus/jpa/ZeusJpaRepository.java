@@ -1,12 +1,12 @@
 package com.lmt.zeus.jpa;
 
 import com.lmt.zeus.parent.utils.BeanUtils;
-import lombok.extern.slf4j.Slf4j;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.util.Assert;
 
-import javax.persistence.EntityManager;
 import java.util.Optional;
 
 /**
@@ -16,10 +16,9 @@ import java.util.Optional;
  * @date 2020/3/4 18:01
  * @since JDK1.8
  */
-@Slf4j
 public class ZeusJpaRepository<T, ID> extends SimpleJpaRepository<T, ID> {
 
-    private JpaEntityInformation<T, ?> jpaEntityInformation;
+    private final JpaEntityInformation<T, ID> jpaEntityInformation;
 
     /**
      * Creates a new {@link ZeusJpaRepository} to manage objects of the given {@link JpaEntityInformation}.
@@ -28,7 +27,7 @@ public class ZeusJpaRepository<T, ID> extends SimpleJpaRepository<T, ID> {
      * @param entityManager     must not be {@literal null}.
      */
     @Autowired
-    public ZeusJpaRepository(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
+    public ZeusJpaRepository(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager) {
         super(entityInformation, entityManager);
         this.jpaEntityInformation = entityInformation;
     }
@@ -43,7 +42,8 @@ public class ZeusJpaRepository<T, ID> extends SimpleJpaRepository<T, ID> {
      */
     @Override
     public <S extends T> S save(S entity) {
-        ID id = (ID) jpaEntityInformation.getId(entity);
+        Assert.notNull(entity, "Entity must not be null");
+        ID id = jpaEntityInformation.getId(entity);
         if (id != null) {
             Optional<T> op = findById(id);
             if (op.isPresent()) {
