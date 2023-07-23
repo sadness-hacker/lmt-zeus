@@ -1,13 +1,18 @@
 package com.lmt.zeus.jpa.config;
 
 import com.lmt.zeus.jpa.annotation.JpaDto;
+import com.querydsl.jpa.JPQLQueryFactory;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.FatalBeanException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.convert.support.GenericConversionService;
@@ -87,6 +92,18 @@ public class ZeusJpaConfiguration {
             }
         }
         return target;
+    }
+
+    /**
+     * 注入JPQLQueryFactory
+     * @author bazhandao
+     * @date 2023-07-23
+     * @param entityManager
+     * @return
+     */
+    @Bean
+    public JPQLQueryFactory jpqlQueryFactory(@Autowired EntityManager entityManager) {
+        return new JPAQueryFactory(entityManager);
     }
 
 }
