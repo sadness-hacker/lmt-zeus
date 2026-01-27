@@ -2,6 +2,7 @@ package com.lmt.zeus.parent.utils;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lmt.zeus.parent.exception.ZeusExceptionEnum;
 import com.lmt.zeus.parent.exception.ZeusException;
@@ -18,8 +19,9 @@ public class JSONUtils {
 
     public static final ObjectMapper mapperWithClassInfo = new ObjectMapper();
 
-    {
+    static {
         mapperWithClassInfo.activateDefaultTyping(mapperWithClassInfo.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     /**

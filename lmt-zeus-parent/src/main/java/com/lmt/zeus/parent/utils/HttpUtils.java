@@ -72,6 +72,8 @@ public class HttpUtils {
             if(statusLine.getStatusCode() == HttpStatus.SC_OK){
                 String result = EntityUtils.toString(entity, "UTF-8");
                 return result;
+            } else {
+                log.error("post请求失败：{}, {}", url, statusLine);
             }
         } catch (Exception e) {
             throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
@@ -153,6 +155,8 @@ public class HttpUtils {
             if(statusLine.getStatusCode() == HttpStatus.SC_OK){
                 String result = EntityUtils.toString(entity, "UTF-8");
                 return result;
+            } else {
+                log.error("get请求失败：{}, {}", url, statusLine);
             }
         } catch (Exception e) {
             throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
@@ -183,6 +187,8 @@ public class HttpUtils {
                 HttpEntity entity = response.getEntity();
                 String result = EntityUtils.toString(entity, "UTF-8");
                 return result;
+            } else {
+                log.error("post请求失败,url={}, reason={} {}", url, statusLine.getStatusCode(), statusLine.getReasonPhrase());
             }
         } catch (Exception e) {
             throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
@@ -233,6 +239,8 @@ public class HttpUtils {
                 HttpEntity entity = response.getEntity();
                 String result = EntityUtils.toString(entity, "UTF-8");
                 return result;
+            } else {
+                log.error("get请求失败：{}, {}", url, statusLine);
             }
         } catch (Exception e) {
             throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
