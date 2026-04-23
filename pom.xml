@@ -6,11 +6,11 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.2</version>
+        <version>4.0.5</version>
     </parent>
     <groupId>com.lmt.zeus</groupId>
     <artifactId>lmt-zeus</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -26,16 +26,19 @@
     </modules>
 
     <properties>
-        <reversion>2.0.0-SNAPSHOT</reversion>
+        <reversion>3.0.0-SNAPSHOT</reversion>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <guava>32.1.1-jre</guava>
-        <commons-lang3>3.12.0</commons-lang3>
-        <logback-core>1.4.8</logback-core>
-        <logback-classic>1.4.8</logback-classic>
-        <slf4j-api>2.0.7</slf4j-api>
-        <jackson>2.15.2</jackson>
-        <commons-io>2.13.0</commons-io>
+        <guava>33.6.0-jre</guava>
+        <commons-lang3>3.20.0</commons-lang3>
+        <logback-core>1.5.32</logback-core>
+        <logback-classic>1.5.32</logback-classic>
+        <slf4j-api>2.0.17</slf4j-api>
+        <jackson>2.21.2</jackson>
+        <commons-io>2.21.0</commons-io>
         <junit>4.13.2</junit>
     </properties>
 
@@ -83,7 +86,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>${jackson}</version>
+            <version>2.21</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -103,6 +106,9 @@
                     <source>21</source>
                     <target>21</target>
                     <encoding>UTF-8</encoding>
+                    <compilerArgs>
+                        <arg>-proc:full</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>

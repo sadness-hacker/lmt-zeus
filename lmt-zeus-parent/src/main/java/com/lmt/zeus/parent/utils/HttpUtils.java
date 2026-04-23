@@ -6,13 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -25,8 +26,12 @@ public class HttpUtils {
 
     private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
 
+    private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ZeusHttpClient/4.0.5";
+
     private static final HttpClient client = HttpClient.newBuilder()
+            .version(HttpClient.Version.HTTP_2)
             .connectTimeout(Duration.ofSeconds(30))
+            .executor(java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor())
             .build();
 
     /**
@@ -51,15 +56,16 @@ public class HttpUtils {
      */
     public static String post(HttpClient client, String url, Map<String, Object> param) {
         //设置参数
-        List<String> list = new ArrayList<>();
-        for(Map.Entry<String, Object> e : param.entrySet()){
-            list.add(e.getKey() + "=" + e.getValue());
-        }
+        String formData = param.entrySet().stream()
+                .map(e -> URLEncoder.encode(e.getKey(), StandardCharsets.UTF_8) + "=" +
+                        URLEncoder.encode(String.valueOf(e.getValue()), StandardCharsets.UTF_8))
+                .collect(Collectors.joining("&"));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .timeout(Duration.ofSeconds(20))
-                .header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
-                .POST(HttpRequest.BodyPublishers.ofString(String.join("&", list)))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("User-Agent", USER_AGENT)
+                .POST(HttpRequest.BodyPublishers.ofString(formData))
                 .build();
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -117,26 +123,19 @@ public class HttpUtils {
      * @return
      */
     public static String get(HttpClient client, String url, Map<String, Object> param) {
-        StringBuilder sb = new StringBuilder();
-        if(param != null){
-            for(Map.Entry<String, Object> e : param.entrySet()){
-                String k = e.getKey();
-                String v = String.valueOf(e.getValue());
-                sb.append("&").append(k).append("=").append(v);
-            }
-        }
-        String query = sb.toString();
-        if(query.length() >= 1){
-            if(!url.contains("?")){
-                query = query.replaceFirst("&", "");
-                url = url + "?" + query;
-            } else {
-                url = url + query;
-            }
+        String fullUrl = url;
+        if (param != null && !param.isEmpty()) {
+            String query = param.entrySet().stream()
+                    .map(e -> URLEncoder.encode(e.getKey(), StandardCharsets.UTF_8) + "=" +
+                            URLEncoder.encode(String.valueOf(e.getValue()), StandardCharsets.UTF_8))
+                    .collect(Collectors.joining("&"));
+
+            fullUrl = url.contains("?") ? url + "&" + query : url + "?" + query;
         }
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
+                .uri(URI.create(fullUrl))
                 .timeout(Duration.ofSeconds(20))
+                .header("User-Agent", USER_AGENT)
                 .GET()
                 .build();
         try {
@@ -165,6 +164,7 @@ public class HttpUtils {
                 .uri(URI.create(url))
                 .timeout(Duration.ofSeconds(20))
                 .header("Content-Type", "application/json;charset=UTF-8")
+                .header("User-Agent", USER_AGENT)
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
         try {
@@ -185,6 +185,7 @@ public class HttpUtils {
                 .uri(URI.create(url))
                 .timeout(Duration.ofSeconds(20))
                 .header("Content-Type", "application/json;charset=UTF-8")
+                .header("User-Agent", USER_AGENT)
                 .POST(HttpRequest.BodyPublishers.ofString(body));
         for (Map.Entry<String, String> header : headers.entrySet()) {
             builder = builder.header(header.getKey(), header.getValue());
@@ -209,6 +210,7 @@ public class HttpUtils {
         HttpRequest.Builder builder = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .timeout(Duration.ofSeconds(20))
+                .header("User-Agent", USER_AGENT)
                 .GET();
         for (Map.Entry<String, String> header : headers.entrySet()) {
             builder = builder.header(header.getKey(), header.getValue());

@@ -26,7 +26,7 @@ public class ZeusIdentifierGenerator implements IdentifierGenerator {
     @Override
     public Object generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
         // 1.已存在指定id，直接返回
-        Object id = session.getEntityPersister(null, object).getClassMetadata().getIdentifier(object, session);
+        Object id = session.getSessionFactory().getPersistenceUnitUtil().getIdentifier(object);
         if (id != null) {
             return id;
         }

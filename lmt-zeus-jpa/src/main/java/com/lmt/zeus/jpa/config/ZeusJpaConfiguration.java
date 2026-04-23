@@ -49,7 +49,7 @@ public class ZeusJpaConfiguration {
             GenericConversionService genericConversionService = ((GenericConversionService) DefaultConversionService.getSharedInstance());
             genericConversionService.addConverter(Map.class, c, m -> {
                 try {
-                    Object obj = c.newInstance();
+                    Object obj = c.getDeclaredConstructor().newInstance();
                     return copyMapToObj(m, obj);
                 } catch (Exception e) {
                     throw new FatalBeanException("Jpa结果转换出错,class=" + c.getName(), e);
