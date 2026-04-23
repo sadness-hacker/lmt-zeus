@@ -8,11 +8,14 @@ import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
@@ -30,7 +33,23 @@ import java.util.Map;
 @Slf4j
 public class HttpUtils {
 
-    private static HttpClient client = HttpClients.createDefault();
+    private static CloseableHttpClient client = buildClient();
+
+    private static CloseableHttpClient buildClient() {
+        PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+        cm.setMaxTotal(200);          // 总连接数
+        cm.setDefaultMaxPerRoute(20); // 每个 host 最大连接
+
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectionRequestTimeout(3000) // 从池获取连接的超时（毫秒）
+                .build();
+
+        CloseableHttpClient client = HttpClients.custom()
+                .setConnectionManager(cm)
+                .setDefaultRequestConfig(requestConfig)
+                .build();
+        return client;
+    }
 
     /**
      * 发送post请求，form表单格式
@@ -61,12 +80,13 @@ public class HttpUtils {
         for(Map.Entry<String, Object> e : param.entrySet()){
             list.add(new BasicNameValuePair(e.getKey(),String.valueOf(e.getValue())));
         }
+        HttpResponse response = null;
         try {
-            if(list.size() > 0){
+            if (list.size() > 0){
                 UrlEncodedFormEntity entity = new UrlEncodedFormEntity(list,"UTF-8");
                 post.setEntity(entity);
             }
-            HttpResponse response = client.execute(post);
+            response = client.execute(post);
             HttpEntity entity = response.getEntity();
             StatusLine statusLine = response.getStatusLine();
             if(statusLine.getStatusCode() == HttpStatus.SC_OK){
@@ -79,6 +99,14 @@ public class HttpUtils {
             throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
                     .set("url", url)
                     .setAll(param);
+        } finally {
+            try {
+                if (response != null && response instanceof CloseableHttpResponse) {
+                    ((CloseableHttpResponse) response).close();
+                }
+            } catch (Exception e) {
+                log.error("关闭HttpClient链接出错!", e);
+            }
         }
         return null;
     }
@@ -148,8 +176,9 @@ public class HttpUtils {
         HttpGet get = new HttpGet(url);
         RequestConfig requestConfig = RequestConfig.custom().setProxy(buildProxy(url)).setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
         get.setConfig(requestConfig);
+        HttpResponse response = null;
         try {
-            HttpResponse response = client.execute(get);
+            response = client.execute(get);
             HttpEntity entity = response.getEntity();
             StatusLine statusLine = response.getStatusLine();
             if(statusLine.getStatusCode() == HttpStatus.SC_OK){
@@ -162,6 +191,14 @@ public class HttpUtils {
             throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
                     .set("url", url)
                     .setAll(param);
+        } finally {
+            try {
+                if (response != null && response instanceof CloseableHttpResponse) {
+                    ((CloseableHttpResponse) response).close();
+                }
+            } catch (Exception e) {
+                log.error("关闭HttpClient链接出错!", e);
+            }
         }
         return null;
     }
@@ -175,13 +212,11 @@ public class HttpUtils {
      * @return
      */
     public static String postBody(String url, String body) {
-        HttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(url);
         RequestConfig requestConfig = RequestConfig.custom().setProxy(buildProxy(url)).setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
         post.setConfig(requestConfig);
         post.setEntity(new StringEntity(body, "UTF-8"));
-        try {
-            HttpResponse response = client.execute(post);
+        try (CloseableHttpResponse response = client.execute(post)) {
             StatusLine statusLine = response.getStatusLine();
             if(statusLine.getStatusCode() == HttpStatus.SC_OK){
                 HttpEntity entity = response.getEntity();
@@ -199,7 +234,6 @@ public class HttpUtils {
     }
 
     public static String postBody(String url, Map<String, String> headers, String body) {
-        HttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(url);
         RequestConfig requestConfig = RequestConfig.custom().setProxy(buildProxy(url)).setSocketTimeout(60*1000).setConnectTimeout(60*1000).setConnectionRequestTimeout(60*1000).build();
         post.setConfig(requestConfig);
@@ -207,8 +241,7 @@ public class HttpUtils {
         for (Map.Entry<String, String> header : headers.entrySet()) {
             post.addHeader(header.getKey(), header.getValue());
         }
-        try {
-            HttpResponse response = client.execute(post);
+        try (CloseableHttpResponse response = client.execute(post)) {
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK){
                 HttpEntity entity = response.getEntity();
@@ -232,8 +265,7 @@ public class HttpUtils {
         for (Map.Entry<String, String> header : headers.entrySet()) {
             get.addHeader(header.getKey(), header.getValue());
         }
-        try {
-            HttpResponse response = client.execute(get);
+        try (CloseableHttpResponse response = client.execute(get)) {
             StatusLine statusLine = response.getStatusLine();
             if(statusLine.getStatusCode() == HttpStatus.SC_OK){
                 HttpEntity entity = response.getEntity();
