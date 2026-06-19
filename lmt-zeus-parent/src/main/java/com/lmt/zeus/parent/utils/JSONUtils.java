@@ -1,10 +1,14 @@
 package com.lmt.zeus.parent.utils;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DefaultTyping;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.DeserializationFeature;
 import com.lmt.zeus.parent.exception.ZeusExceptionEnum;
 import com.lmt.zeus.parent.exception.ZeusException;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 
 /**
  * @description 基于Jackson库的json工具类
@@ -14,13 +18,19 @@ import com.lmt.zeus.parent.exception.ZeusException;
  */
 public class JSONUtils {
 
-    public static final ObjectMapper mapper = new ObjectMapper();
+    // ✅ 方案一：标准不可变实例（推荐，完全符合 Jackson 3 工业设计美学）
+    public static final ObjectMapper mapper = JsonMapper.builder()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .build();
 
-    public static final ObjectMapper mapperWithClassInfo = new ObjectMapper();
-
-    {
-        mapperWithClassInfo.activateDefaultTyping(mapperWithClassInfo.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-    }
+    // 2. 携带类信息的 mapper
+    public static final ObjectMapper mapperWithClassInfo = JsonMapper.builder()
+            .activateDefaultTyping(
+                    BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class).build(),
+                    DefaultTyping.NON_FINAL,
+                    JsonTypeInfo.As.PROPERTY
+            )
+            .build();
 
     /**
      * 对象转json字符串

@@ -3,15 +3,12 @@ package com.lmt.zeus.id.snow.config;
 import com.lmt.zeus.id.snow.buffer.RejectedPutBufferHandler;
 import com.lmt.zeus.id.snow.buffer.RejectedTakeBufferHandler;
 import com.lmt.zeus.id.snow.impl.CachedUidGenerator;
-import com.lmt.zeus.id.snow.worker.SysIdWorkerNodeDao;
-import com.lmt.zeus.id.snow.worker.SysIdWorkerNodeDaoBuilder;
 import com.lmt.zeus.id.snow.worker.WorkerIdAssigner;
 import com.lmt.zeus.parent.utils.SpringContextUtils;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -35,21 +32,7 @@ public class SnowFlakeIdGeneratorConfiguration {
     private SnowFlakeProperties snowFlakeProperties;
 
     @Resource
-    private SnowFlakeDataSourceProperties snowFlakeDataSourceProperties;
-
-    @Resource
     private WorkerIdAssigner workerIdAssigner;
-
-    /**
-     * 根据数据源类型配置SysIdWorkerNodeDao
-     * @author bazhandao
-     * @date 2022-03-30
-     * @return
-     */
-    @Bean
-    public SysIdWorkerNodeDao sysIdWorkerNodeDao(@Autowired SysIdWorkerNodeDaoBuilder sysIdWorkerNodeDaoBuilder) {
-        return sysIdWorkerNodeDaoBuilder.build(snowFlakeDataSourceProperties);
-    }
 
     /**
      * 配置雪花算法CachedUidGenerator

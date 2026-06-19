@@ -12,7 +12,7 @@
     <artifactId>lmt-zeus-jpa</artifactId>
 
     <properties>
-        <druid-spring-boot-starter>1.1.18</druid-spring-boot-starter>
+        <druid-spring-boot-starter>1.2.28</druid-spring-boot-starter>
     </properties>
 
     <dependencies>

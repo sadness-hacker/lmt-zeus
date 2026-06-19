@@ -15,6 +15,7 @@
  */
 package com.lmt.zeus.id.snow.worker;
 
+import com.lmt.zeus.id.snow.config.SnowFlakeDataSourceProperties;
 import com.lmt.zeus.id.snow.utils.DockerUtils;
 import com.lmt.zeus.id.snow.utils.NetUtils;
 import com.lmt.zeus.id.snow.worker.entity.SysIdWorkerNode;
@@ -24,7 +25,6 @@ import com.lmt.zeus.parent.exception.ZeusExceptionEnum;
 import com.lmt.zeus.parent.utils.FileUtils;
 import com.lmt.zeus.parent.utils.JSONUtils;
 import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Resource;
 import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,18 +44,23 @@ import java.util.concurrent.TimeUnit;
  *
  * @author yutianbao
  */
-@Service(value = "workerIdAssigner")
+@Service("workerIdAssigner")
 public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
 
     private static Logger log = LoggerFactory.getLogger(DisposableWorkerIdAssigner.class);
 
-    @Resource
-    private SysIdWorkerNodeDao sysIdWorkerNodeDao;
+    private final String applicationName;
 
-    @Value("${spring.application.name:default}")
-    private String applicationName;
+    private final SysIdWorkerNodeDao sysIdWorkerNodeDao;
 
     private SysIdWorkerNode workerNode;
+
+    public DisposableWorkerIdAssigner(@Value("${spring.application.name:default}") String applicationName,
+                                      SnowFlakeDataSourceProperties snowFlakeDataSourceProperties,
+                                      SysIdWorkerNodeDaoBuilder sysIdWorkerNodeDaoBuilder) {
+        this.applicationName = applicationName;
+        this.sysIdWorkerNodeDao = sysIdWorkerNodeDaoBuilder.build(snowFlakeDataSourceProperties);
+    }
 
     @PostConstruct
     private void init() {

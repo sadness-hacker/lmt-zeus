@@ -1,6 +1,8 @@
 package com.lmt.zeus.parent;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @description 接口调用返回统一的Result类
@@ -32,6 +34,8 @@ public class Result<T> implements Serializable {
      * 成功时为返回值
      */
     private T data;
+
+    private Map<String, Object> attr = new HashMap<>();
 
     public Result() {
 
@@ -75,4 +79,13 @@ public class Result<T> implements Serializable {
     public T getData() {
         return data;
     }
+
+    public Map<String, Object> getAttr() {
+        return attr;
+    }
+
+    public void addAttr(String key, Object value) {
+        attr.put(key, value);
+    }
+
 }
