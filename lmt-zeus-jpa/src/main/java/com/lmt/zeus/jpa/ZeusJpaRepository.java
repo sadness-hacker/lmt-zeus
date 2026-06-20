@@ -19,6 +19,7 @@ import java.util.Optional;
 public class ZeusJpaRepository<T, ID> extends SimpleJpaRepository<T, ID> {
 
     private final JpaEntityInformation<T, ID> jpaEntityInformation;
+    private final EntityManager entityManager;
 
     /**
      * Creates a new {@link ZeusJpaRepository} to manage objects of the given {@link JpaEntityInformation}.
@@ -30,6 +31,7 @@ public class ZeusJpaRepository<T, ID> extends SimpleJpaRepository<T, ID> {
     public ZeusJpaRepository(JpaEntityInformation<T, ID> entityInformation, EntityManager entityManager) {
         super(entityInformation, entityManager);
         this.jpaEntityInformation = entityInformation;
+        this.entityManager = entityManager;
     }
 
     /**
@@ -50,6 +52,9 @@ public class ZeusJpaRepository<T, ID> extends SimpleJpaRepository<T, ID> {
                 T t = op.get();
                 BeanUtils.copyPropertiesWithoutNull(entity, t);
                 entity = (S) t;
+            } else if (entity instanceof ZeusJpaEntity) {
+                // id != null && 数据库不存在时,设置_new标识为true
+                ((ZeusJpaEntity<ID>) entity).set_new(true);
             }
         }
         return super.save(entity);

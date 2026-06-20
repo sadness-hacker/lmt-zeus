@@ -1,16 +1,17 @@
 package com.lmt.zeus.jpa.config;
 
+import com.lmt.zeus.jpa.ZeusHibernateInterceptor;
 import com.lmt.zeus.jpa.annotation.JpaDto;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Resource;
 import jakarta.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.hibernate.autoconfigure.HibernatePropertiesCustomizer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +35,11 @@ public class ZeusJpaConfiguration {
 
     private final Logger log = LoggerFactory.getLogger(ZeusJpaConfiguration.class);
 
-    @Resource
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
+
+    public ZeusJpaConfiguration(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
     /**
      * 初始化注入@JpaDto对应的Converter
@@ -104,6 +108,20 @@ public class ZeusJpaConfiguration {
     @Bean
     public JPQLQueryFactory jpqlQueryFactory(@Autowired EntityManager entityManager) {
         return new JPAQueryFactory(entityManager);
+    }
+
+    @Bean
+    public ZeusHibernateInterceptor zeusHibernateInterceptor() {
+        return new ZeusHibernateInterceptor();
+    }
+
+    @Bean
+    public HibernatePropertiesCustomizer zeusInterceptorCustomizer(ZeusHibernateInterceptor interceptor) {
+        return (hibernateProperties) -> {
+            // 💡 顺藤摸瓜：直接往 Hibernate 启动属性字典里塞入你的拦截器实例对象
+            // 这种方式支持直接塞入一个已经由 Spring 容器管理好的 Bean 实例
+            hibernateProperties.put("hibernate.session_factory.interceptor", interceptor);
+        };
     }
 
 }

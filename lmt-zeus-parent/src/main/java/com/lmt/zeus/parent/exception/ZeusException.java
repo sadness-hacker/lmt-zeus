@@ -104,7 +104,9 @@ public class ZeusException extends RuntimeException{
      * @return
      */
     public ZeusException setAll(Map<String, Object> map) {
-        this.attachment.putAll(map);
+        if (map != null) {
+            this.attachment.putAll(map);
+        }
         return this;
     }
 
