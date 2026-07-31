@@ -3,6 +3,7 @@ package com.lmt.zeus.parent.utils;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.DefaultTyping;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.DeserializationFeature;
 import com.lmt.zeus.parent.exception.ZeusExceptionEnum;
@@ -96,4 +97,25 @@ public class JSONUtils {
                     .set("clazz", typeReference);
         }
     }
+
+    /**
+     * 解析字符串为JsonNode
+     * if (node.isArray()) {
+     *     ArrayNode arrayNode = (ArrayNode) node;
+     * }
+     * if (node.isObject()) {
+     *     ObjectNode objectNode = (ObjectNode) node;
+     * }
+     * @param json
+     * @return
+     */
+    public static JsonNode parse(String json) {
+        try {
+            return mapper.readTree(json);
+        } catch (Exception e) {
+            throw ZeusException.wrap(ZeusExceptionEnum.JSON_2_BEAN_ERR.getCode(), ZeusExceptionEnum.JSON_2_BEAN_ERR.getMsg(), e)
+                    .set("json", json);
+        }
+    }
+    
 }

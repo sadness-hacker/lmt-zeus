@@ -62,7 +62,7 @@ public class HttpUtils {
                 .collect(Collectors.joining("&"));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .timeout(Duration.ofSeconds(20))
+                .timeout(Duration.ofSeconds(60))
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .header("User-Agent", USER_AGENT)
                 .POST(HttpRequest.BodyPublishers.ofString(formData))
@@ -134,7 +134,7 @@ public class HttpUtils {
         }
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(fullUrl))
-                .timeout(Duration.ofSeconds(20))
+                .timeout(Duration.ofSeconds(60))
                 .header("User-Agent", USER_AGENT)
                 .GET()
                 .build();
@@ -162,7 +162,7 @@ public class HttpUtils {
     public static String postBody(String url, String body) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .timeout(Duration.ofSeconds(20))
+                .timeout(Duration.ofSeconds(60))
                 .header("Content-Type", "application/json;charset=UTF-8")
                 .header("User-Agent", USER_AGENT)
                 .POST(HttpRequest.BodyPublishers.ofString(body))
@@ -183,7 +183,7 @@ public class HttpUtils {
     public static String postBody(String url, Map<String, String> headers, String body) {
         HttpRequest.Builder builder = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .timeout(Duration.ofSeconds(20))
+                .timeout(Duration.ofSeconds(60))
                 .header("Content-Type", "application/json;charset=UTF-8")
                 .header("User-Agent", USER_AGENT)
                 .POST(HttpRequest.BodyPublishers.ofString(body));
@@ -209,7 +209,7 @@ public class HttpUtils {
     public static String getWithHeaders(String url, Map<String, String> headers) {
         HttpRequest.Builder builder = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .timeout(Duration.ofSeconds(20))
+                .timeout(Duration.ofSeconds(60))
                 .header("User-Agent", USER_AGENT)
                 .GET();
         for (Map.Entry<String, String> header : headers.entrySet()) {
@@ -226,6 +226,66 @@ public class HttpUtils {
             throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
                     .set("url", url);
         }
+        return null;
+    }
+
+    /**
+     * 文件下载
+     * @param url
+     * @return
+     */
+    public static byte[] download(String url) {
+        return downloadWithRedirect(url, 20);
+    }
+
+    private static byte[] downloadWithRedirect(String url, int maxRedirects) {
+        if (maxRedirects < 0) {
+            log.warn("文件下载失败，重定向次数过多，目标 url={}", url);
+            return null;
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .timeout(Duration.ofSeconds(600))
+                .header("User-Agent", USER_AGENT)
+                .GET()
+                .build();
+
+        try {
+            HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+            int statusCode = response.statusCode();
+
+            // 状态码 200：下载成功
+            if (statusCode == 200) {
+                return response.body();
+            }
+            // 状态码 301/302/303/307/308：处理重定向
+            else if (statusCode == 301 || statusCode == 302 || statusCode == 303 || statusCode == 307 || statusCode == 308) {
+                // 获取重定向的 Location 响应头
+                String location = response.headers().firstValue("Location").orElse(null);
+
+                if (location != null && !location.isBlank()) {
+                    // 处理相对路径重定向的问题（例如 location = "/image.png"）
+                    URI redirectUri = URI.create(url).resolve(location);
+                    log.info("检测到 {} 跳转，原地址 url={}，正在重定向至 url={}", statusCode, url, redirectUri);
+
+                    // 递归调用处理重定向的 URL，并扣减 maxRedirects 剩余次数
+                    return downloadWithRedirect(redirectUri.toString(), maxRedirects - 1);
+                } else {
+                    log.warn("文件下载触发 {}，但未找到 Location 请求头。url={}", statusCode, url);
+                    return null;
+                }
+            }
+            // 其他错误状态码
+            else {
+                String errorMsg = response.body() != null ? new String(response.body(), StandardCharsets.UTF_8) : "无响应体";
+                log.warn("文件下载失败, url={}, 响应码：{}, 响应体：{}", url, statusCode, errorMsg);
+            }
+        } catch (Exception e) {
+            throw ZeusException.wrap(ZeusExceptionEnum.HTTP_REQUEST_ERROR.getCode(), ZeusExceptionEnum.HTTP_REQUEST_ERROR.getMsg(), e)
+                    .set("url", url);
+        }
+
         return null;
     }
 

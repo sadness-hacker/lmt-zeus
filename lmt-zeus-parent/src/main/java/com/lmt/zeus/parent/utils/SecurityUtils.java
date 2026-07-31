@@ -41,6 +41,15 @@ public class SecurityUtils {
         return md5;
     }
 
+    public static String md5(byte [] arr) {
+        if (arr == null || arr.length == 0) {
+            return "";
+        }
+        @SuppressWarnings("deprecation")
+        String md5 = Hashing.md5().hashBytes(arr).toString();
+        return md5;
+    }
+
     /**
      * 获取字符串的md5值,转为Long型,正数
      * @param str
