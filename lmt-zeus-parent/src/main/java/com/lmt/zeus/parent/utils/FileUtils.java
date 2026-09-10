@@ -77,6 +77,7 @@ public class FileUtils {
     public static void write(String path, String content) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
             bw.write(content);
+            bw.flush();
         } catch (Exception e) {
             throw ZeusException.wrap(ZeusExceptionEnum.FILE_WRITE_ERROR.getCode(), ZeusExceptionEnum.FILE_WRITE_ERROR.getMsg(), e);
         }
